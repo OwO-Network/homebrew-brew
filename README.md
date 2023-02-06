@@ -2,7 +2,7 @@
  * @Author: Vincent Young
  * @Date: 2023-02-07 03:06:58
  * @LastEditors: Vincent Young
- * @LastEditTime: 2023-02-07 03:22:07
+ * @LastEditTime: 2023-02-07 03:28:18
  * @FilePath: /homebrew-brew/README.md
  * @Telegram: https://t.me/missuo
  * 
@@ -22,15 +22,8 @@ brew tap owo-network/brew
 ```
 
 ## Install
-### NextTrace Enhanced
-```shell
-brew install nexttrace-enhanced
-```
-
-### NextTrace Dev
-```shell
-brew install nexttrace-dev
-```
+- NextTrace Enhanced: `brew install nexttrace-enhanced`
+- NextTrace Dev: `brew install nexttrace-dev`
 
 ## Uninstall
 ```shell
