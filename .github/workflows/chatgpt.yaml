@@ -1,0 +1,17 @@
+
+name: Update GPT Version
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Shell
+        run: |
+          bash getRelease.sh
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update ChatGPT release version
