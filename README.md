@@ -2,7 +2,7 @@
  * @Author: Vincent Young
  * @Date: 2023-02-07 03:06:58
  * @LastEditors: Vincent Young
- * @LastEditTime: 2023-02-07 03:28:18
+ * @LastEditTime: 2023-03-03 02:12:55
  * @FilePath: /homebrew-brew/README.md
  * @Telegram: https://t.me/missuo
  * 
@@ -22,8 +22,7 @@ brew tap owo-network/brew
 ```
 
 ## Install
-- NextTrace Enhanced: `brew install nexttrace-enhanced`
-- NextTrace Dev: `brew install nexttrace-dev`
+- [OwO-Network/DeepLX](https://github.com/OwO-Network/DeepLX#homebrew-recommended)
 
 ## Uninstall
 ```shell
