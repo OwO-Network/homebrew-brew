@@ -2,7 +2,7 @@ class Deeplx < Formula
   desc "DeepLX is an permanently free DeepL API written in Golang."
   homepage "https://github.com/OwO-Network/DeepLX"
   version "0.7.3"
-
+  
   if Hardware::CPU.arm?
     url "https://github.com/OwO-Network/DeepLX/releases/download/v#{version}/deeplx_darwin_arm64"
     sha256 "ca09e0871aa94f548778a65a40a9b9f2b7e73b73296b4d4ca4c62e6d65aaee47"
@@ -38,8 +38,6 @@ class Deeplx < Formula
           <string>#{var}/log/deeplx/deeplx.log</string>
           <string>--storage-dbfile</string>
           <string>#{var}/run/deeplx/deeplx.db</string>
-          <string>--model-file</string>
-          <string>#{etc}/deeplx/model.bin</string>
           <string>--plugins-dir</string>
           <string>#{etc}/deeplx/plugins</string>
           <string>--security-secret-key</string>
@@ -62,15 +60,10 @@ class Deeplx < Formula
       </plist>
     EOS
   end
-  
+
   def post_install
     (var/"log/deeplx").mkpath
     (var/"run/deeplx").mkpath
-    (etc/"deeplx").mkpath
-    unless (etc/"deeplx/model.bin").exist?
-      ohai "Copying default model"
-      system "curl", "-L", "https://github.com/OwO-Network/DeepLX/releases/download/v#{version}/model.bin", "-o", "#{etc}/deeplx/model.bin"
-    end
     (etc/"deeplx/plugins").mkpath
     install_startup_script
   end
@@ -84,13 +77,9 @@ class Deeplx < Formula
     system "#{HOMEBREW_PREFIX}/bin/brew", "services", "stop", "deeplx"
     (etc/"rc.d/deeplx").unlink if (etc/"rc.d/deeplx").exist?
   end
-  
+
   def caveats
     <<~EOS
-      The default configuration assumes that the model file is located at #{etc}/deeplx/model.bin
-      and that plugins are located in #{etc}/deeplx/plugins.
-      You can change these settings by modifying the plist file at #{plist_path}.
-
       To start deeplx manually, run:
         sudo deeplx start
 
