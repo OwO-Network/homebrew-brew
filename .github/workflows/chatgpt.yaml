@@ -1,5 +1,5 @@
 
-name: Update GPT Version
+name: update release version
 
 on: 
   workflow_dispatch:
@@ -14,4 +14,4 @@ jobs:
           bash getRelease.sh
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Update ChatGPT release version
+          commit_message: update release version
