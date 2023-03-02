@@ -3,7 +3,7 @@
  # @Author: Vincent Young
  # @Date: 2023-02-17 19:18:08
  # @LastEditors: Vincent Young
- # @LastEditTime: 2023-03-03 01:41:59
+ # @LastEditTime: 2023-03-03 01:44:35
  # @FilePath: /homebrew-brew/getRelease.sh
  # @Telegram: https://t.me/missuo
  # 
@@ -27,12 +27,12 @@ amd64_sha256=$(sha256sum deeplx_darwin_amd64 | cut -d ' ' -f 1)
 arm64_sha256=$(sha256sum deeplx_darwin_arm64 | cut -d ' ' -f 1)
 
 # Update the SHA256 hashes in the formula
-if grep -q "sha256 \"$amd64_sha256\"" Formula/deeplx.rb; then
-    sed -i '' "s/sha256 \"$amd64_sha256\"/sha256 \"$amd64_sha256\"/" Formula/deeplx.rb
+if grep -q "sha256 \"$arm64_sha256\"" Formula/deeplx.rb; then
+    sed -i '' "0,/^ *sha256 .*$/s//  sha256 \"$arm64_sha256\"/" Formula/deeplx.rb
 fi
 
-if grep -q "sha256 \"$arm64_sha256\"" Formula/deeplx.rb; then
-    sed -i '' "s/sha256 \"$arm64_sha256\"/sha256 \"$arm64_sha256\"/" Formula/deeplx.rb
+if grep -q "sha256 \"$amd64_sha256\"" Formula/deeplx.rb; then
+    sed -i '' "1,/^ *sha256 .*$/s//  sha256 \"$amd64_sha256\"/" Formula/deeplx.rb
 fi
 
 # Delete the new binaries
