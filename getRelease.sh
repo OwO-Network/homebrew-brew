@@ -3,7 +3,7 @@
  # @Author: Vincent Young
  # @Date: 2023-02-17 19:18:08
  # @LastEditors: Vincent Young
- # @LastEditTime: 2023-03-03 01:15:46
+ # @LastEditTime: 2023-03-03 01:23:55
  # @FilePath: /homebrew-brew/getRelease.sh
  # @Telegram: https://t.me/missuo
  # 
@@ -17,7 +17,7 @@ update_deeplx(){
     wget https://github.com/OwO-Network/DeepLX/releases/download/v${last_version}/deeplx_darwin_arm64
     amd64_sha256=$(sha256sum deeplx_darwin_amd64 | cut -d ' ' -f 1)
     arm64_sha256=$(sha256sum deeplx_darwin_arm64 | cut -d ' ' -f 1)
-    sed -i '0,/sha256 "[0-9a-f]*"/s//sha256 "'"$arm64_sha256"'"/' Formula/deeplx.rb
-    sed -i '1,/sha256 "[0-9a-f]*"/s//sha256 "'"$amd64_sha256"'"/' Formula/deeplx.rb
+    sed -i "0,/sha256 \".*\"/s//sha256 \"$arm64_sha256\"/" Formula/deeplx.rb
+    sed -i "1,/sha256 \".*\"/s//sha256 \"$amd64_sha256\"/" Formula/deeplx.rb
 }
 update_deeplx
