@@ -3,7 +3,7 @@
  # @Author: Vincent Young
  # @Date: 2023-02-17 19:18:08
  # @LastEditors: Vincent Young
- # @LastEditTime: 2023-03-03 02:11:36
+ # @LastEditTime: 2023-03-03 02:14:25
  # @FilePath: /homebrew-brew/getRelease.sh
  # @Telegram: https://t.me/missuo
  # 
@@ -12,7 +12,7 @@
 
 #!/bin/bash
 
-update_deeplx{
+update_deeplx(){
     # Get the latest version of Deeplx
     last_version=$(curl -Ls "https://api.github.com/repos/OwO-Network/DeepLX/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
 
