@@ -3,7 +3,7 @@
  # @Author: Vincent Young
  # @Date: 2023-02-17 19:18:08
  # @LastEditors: Vincent Young
- # @LastEditTime: 2023-03-03 02:14:25
+ # @LastEditTime: 2023-03-03 02:16:13
  # @FilePath: /homebrew-brew/getRelease.sh
  # @Telegram: https://t.me/missuo
  # 
@@ -29,7 +29,7 @@ update_deeplx(){
 
     # Update the SHA256 hashes in the formula
     sed -i "8s/.*/    sha256 \"${arm64_sha256}\"/" Formula/deeplx.rb
-    sed -i "9s/.*/    sha256 \"${amd64_sha256}\"/" Formula/deeplx.rb
+    sed -i "11s/.*/    sha256 \"${amd64_sha256}\"/" Formula/deeplx.rb
 
     # Delete the new binaries
     rm -f deeplx_darwin*
