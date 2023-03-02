@@ -14,4 +14,11 @@ update_chatgpt(){
     last_version=$(curl -Ls "https://api.github.com/repos/lencx/ChatGPT/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
     sed -i "s/version.*/version \"${last_version}\"/g" Casks/chatgpt.rb
 }
+
+update_deeplx(){
+    last_version=$(curl -Ls "https://api.github.com/repos/OwO-Network/DeepLX/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    sed -i "s/version.*/version \"${last_version}\"/g" Formula/deeplx.rb
+}
+
 update_chatgpt
+update_deeplx
