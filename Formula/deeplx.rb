@@ -8,7 +8,7 @@ class Deeplx < Formula
     sha256 "6f561b6ad63ffc0c0fda4a782db047496f6941565ea36cdc373ef82fd60a7ce5"
     sha256 "8936c9bf3b4d1cc39c2b8c4de1306e3ef6fd5463ef7bd8e51094f27ff15ab378"
     url "https://github.com/OwO-Network/DeepLX/releases/download/v#{version}/deeplx_darwin_amd64"
-    sha256 "ddcd42cb168d9de851d702fbb452dc06dc98d6cf672c054c22136656282de20d"
+    sha256 "8936c9bf3b4d1cc39c2b8c4de1306e3ef6fd5463ef7bd8e51094f27ff15ab378"
   end
 
   depends_on "daemon"
