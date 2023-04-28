@@ -15,6 +15,6 @@ cask "alixby" do
 
     postflight do
     system_command '/bin/chmod', args: ['+x', "#{appdir}/alixby.app/Contents/Resources/engine/aria2c"]
-  end
+    end
   end
   
