@@ -1,4 +1,4 @@
-cask "xiaobaiyang" do
+cask "alixby" do
     version "3.10.25"
     arch = Hardware::CPU.arch.to_s
     sha256s = {
@@ -8,9 +8,13 @@ cask "xiaobaiyang" do
     if arch == "arm64" then arch = "aarch64" end
     url "https://github.com/missuo/AliyunPanMac/releases/download/v#{version}/AliyunPan-v#{version}-#{arch}.dmg"
     sha256 sha256s[arch]
-    name 'xiaobaiyang'
+    name 'alixby'
     homepage 'https://github.com/missuo/AliyunPanMac'
 
     app "alixby.app"
+
+    postflight do
+    system_command '/bin/chmod', args: ['+x', "#{appdir}/AliyunPan.app/Contents/Resources/engine/aria2c"]
+  end
   end
   
