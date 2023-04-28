@@ -11,6 +11,6 @@ cask "xiaobaiyang" do
     name 'xiaobaiyang'
     homepage 'https://github.com/missuo/AliyunPanMac'
 
-    app "阿里云盘.app"
+    app "alixby.app"
   end
   
