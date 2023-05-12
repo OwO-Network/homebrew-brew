@@ -1,4 +1,4 @@
-class USVisa < Formula
+class UsVisa < Formula
     desc "A tool for checking US visa wait times"
     homepage "https://github.com/missuo/USVisaWaitTimes"
     version "0.0.1"
