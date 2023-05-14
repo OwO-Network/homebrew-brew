@@ -1,13 +1,13 @@
 class UsVisa < Formula
     desc "A tool for checking US visa wait times"
     homepage "https://github.com/missuo/USVisaWaitTimes"
-    version "0.0.1"
+    version "0.0.2"
     if Hardware::CPU.arm?
         url "https://github.com/missuo/USVisaWaitTimes/releases/download/v#{version}/us-visa_darwin_arm64"
-        sha256 "1764cd97a121231c180e2f85563e96537521377650bf3f311f37cf9e84060d99"
+        sha256 "d60a4197860ff70d8a43853e1ab52d5d6ddb7be77212a4b3046db52e07b20c0b"
       else
         url "https://github.com/missuo/USVisaWaitTimes/releases/download/v#{version}/us-visa_darwin_amd64"
-        sha256 "fe352e9ad73a630dab5ddec3ab806fc8d3af68786f5afeceea49c44702a32ed6"
+        sha256 "9334980b0584d77fdd5b6a3969be666b98bc7a4c9307739eb3688650edb249cb"
       end
     
       def install
