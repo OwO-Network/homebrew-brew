@@ -28,10 +28,6 @@ class Deeplx < Formula
         <key>ProgramArguments</key>
         <array>
           <string>#{bin}/deeplx</string>
-          <string>--server-port</string>
-          <string>8080</string>
-          <string>--server-endpoint</string>
-          <string>/chat</string>
           <string>--logging-level</string>
           <string>info</string>
           <string>--logging-file</string>
