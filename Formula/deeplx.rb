@@ -19,32 +19,6 @@ class Deeplx < Formula
 
   def plist
     <<~EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>Label</key>
-    <string>homebrew.mxcl.deeplx</string>
-    <key>ProgramArguments</key>
-    <array>
-        <string>/opt/homebrew/Cellar/deeplx/0.8.0/bin/deeplx</string>
-    </array>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>KeepAlive</key>
-    <dict>
-        <key>SuccessfulExit</key>
-        <false/>
-    </dict>
-    <key>WorkingDirectory</key>
-    <string>/opt/homebrew/var/run/deeplx</string>
-    <key>StandardOutPath</key>
-    <string>/opt/homebrew/var/log/deeplx/deeplx.log</string>
-    <key>StandardErrorPath</key>
-    <string>/opt/homebrew/var/log/deeplx/deeplx.log</string>
-</dict>
-</plist>
-
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
