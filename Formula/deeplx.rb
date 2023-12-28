@@ -17,36 +17,6 @@ class Deeplx < Formula
     bin.install Dir["deeplx_*"].first => "deeplx"
   end
 
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{bin}/deeplx</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>KeepAlive</key>
-        <dict>
-          <key>SuccessfulExit</key>
-          <false/>
-        </dict>
-        <key>WorkingDirectory</key>
-        <string>#{var}/run/deeplx</string>
-        <key>StandardOutPath</key>
-        <string>#{var}/log/deeplx/deeplx.log</string>
-        <key>StandardErrorPath</key>
-        <string>#{var}/log/deeplx/deeplx.log</string>
-      </dict>
-      </plist>
-    EOS
-  end
-
   def post_install
     (var/"log/deeplx").mkpath
     (var/"run/deeplx").mkpath
@@ -88,6 +58,3 @@ class Deeplx < Formula
     system "#{bin}/deeplx", "--version"
   end
 end
-
-
-
