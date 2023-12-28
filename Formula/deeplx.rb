@@ -28,40 +28,6 @@ class Deeplx < Formula
     system "rm", "-rf", "/opt/homebrew/etc/deeplx"
   end
 
-def plist
-  <<~XML
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-    <dict>
-      <key>Label</key>
-      <string>#{plist_name}</string>
-      <key>ProgramArguments</key>
-      <array>
-        <string>#{opt_bin}/deeplx</string>
-      </array>
-      <key>RunAtLoad</key>
-      <true/>
-      <key>KeepAlive</key>
-      <true/>
-      <key>StandardErrorPath</key>
-      <string>#{var}/log/deeplx.log</string>
-      <key>StandardOutPath</key>
-      <string>#{var}/log/deeplx.log</string>
-    </dict>
-    </plist>
-  XML
-end
-
-  def caveats
-    <<~EOS
-      To start, stop, or restart deeplx using brew services, run:
-        brew services start deeplx
-        brew services stop deeplx
-        brew services restart deeplx
-    EOS
-  end
-
   service do
     name macos: "#{plist_name}"
   end
