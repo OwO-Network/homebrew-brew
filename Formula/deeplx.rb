@@ -80,6 +80,10 @@ class Deeplx < Formula
     EOS
   end
 
+  service do
+    name macos: "#{plist_name}"
+  end
+      
   test do
     system "#{bin}/deeplx", "--version"
   end
