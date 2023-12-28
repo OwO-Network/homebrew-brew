@@ -29,9 +29,13 @@ class Deeplx < Formula
   end
 
   service do
-    name macos: "#{plist_name}"
+    run [opt_bin/"deeplx"]
+    working_dir var/"deeplx"
+    keep_alive true
+    log_path var/"log/deeplx.log"
+    error_log_path var/"log/deeplx.log"
   end
-
+  
   test do
     system "#{bin}/deeplx", "--version"
   end
