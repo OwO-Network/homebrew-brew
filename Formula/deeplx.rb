@@ -1,14 +1,14 @@
 class Deeplx < Formula
   desc "DeepLX is a permanently free DeepL API client written in Golang."
   homepage "https://github.com/OwO-Network/DeepLX"
-  version "0.9.3"
+  version "0.9.5"
 
   if Hardware::CPU.arm?
     url "https://github.com/OwO-Network/DeepLX/releases/download/v#{version}/deeplx_darwin_arm64"
-    sha256 "4dce81dda4165ef1c0357abb5ee0180e111b56a315d4e7293df18f702b234495"
+    sha256 "8bddf7d2110dc04f3f1f27d996dfde9d2c940ab2e42337d1d0daac1f983f3795"
   else
     url "https://github.com/OwO-Network/DeepLX/releases/download/v#{version}/deeplx_darwin_amd64"
-    sha256 "c07a56efd8540687c2d1c61ce7ec203ca29135a165657112fe35514c6effb2ea"
+    sha256 "2d459ccc6ad9ce67e740a6ad3a67af413a4383fad99ee295a119f8d0355f9a66"
   end
 
   def install
