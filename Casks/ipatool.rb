@@ -4,14 +4,17 @@ cask "ipatool" do
     url "https://github.com/missuo/ipatool/releases/download/v2.1.5/ipatool-darwin-aarch64"
     binary "ipatool-darwin-aarch64", target: "ipatool"
 
-  version "2.1.5"
-  name "IPATool"
-  desc "CLI tool for searching and downloading iOS app packages from the App Store"
-  homepage "https://github.com/missuo/ipatool"
+    version "2.1.5"
+    name "IPATool"
+    desc "CLI tool for searching and downloading iOS app packages from the App Store"
+    homepage "https://github.com/missuo/ipatool"
 
-  depends_on macos: ">= :catalina"
+    depends_on macos: ">= :catalina"
 
-  postflight do
-    system "xattr", "-d", "com.apple.quarantine", "#{HOMEBREW_PREFIX}/bin/ipatool"
+    postflight do
+      system "xattr", "-d", "com.apple.quarantine", "#{HOMEBREW_PREFIX}/bin/ipatool"
+    end
+  else
+    odie "ipatool supports Apple silicon only"
   end
 end
