@@ -57,5 +57,29 @@ update_claude2openai(){
     rm -f claude2openai_darwin*
 }
 
+update_imgzip(){
+    # Get the latest version of ImgZip
+    last_version=$(curl -Ls "https://api.github.com/repos/missuo/imgzip/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Update version in the cask
+    sed -i "s/version \".*\"/version \"${last_version}\"/" Casks/imgzip.rb
+
+    # Download the new binaries
+    wget -O imgzip_darwin_amd64 https://github.com/missuo/imgzip/releases/download/v${last_version}/imgzip-darwin-amd64
+    wget -O imgzip_darwin_arm64 https://github.com/missuo/imgzip/releases/download/v${last_version}/imgzip-darwin-arm64
+
+    # Calculate the SHA256 hash for the new binaries
+    amd64_sha256=$(sha256sum imgzip_darwin_amd64 | cut -d ' ' -f 1)
+    arm64_sha256=$(sha256sum imgzip_darwin_arm64 | cut -d ' ' -f 1)
+
+    # Update the SHA256 hashes in the cask
+    sed -i "5s/.*/    sha256 \"${arm64_sha256}\"/" Casks/imgzip.rb
+    sed -i "9s/.*/    sha256 \"${amd64_sha256}\"/" Casks/imgzip.rb
+
+    # Delete the new binaries
+    rm -f imgzip_darwin*
+}
+
 update_deeplx
 update_claude2openai
+update_imgzip
