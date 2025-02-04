@@ -11,4 +11,14 @@ cask "polyglot-sub" do
   depends_on macos: ">= :monterey"
 
   app "Polyglot Sub.app"
+
+  postflight do
+    system_command "/usr/bin/xattr",
+                   args: ["-r", "-d", "com.apple.quarantine", "#{staged_path}/Polyglot Sub.app"],
+                   sudo: true
+
+    system_command "/usr/bin/codesign",
+                   args: ["--force", "--deep", "--sign", "-", "#{staged_path}/Polyglot Sub.app"],
+                   sudo: true
+  end
 end
