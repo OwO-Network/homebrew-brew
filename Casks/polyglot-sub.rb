@@ -14,9 +14,13 @@ cask "polyglot-sub" do
 
   postflight do
     system_command "/usr/bin/xattr",
-                   args: ["-r", "-d", "com.apple.quarantine", "#{staged_path}/Polyglot Sub.app"],
+                   args: ["-cr", "#{staged_path}/Polyglot Sub.app"],
                    sudo: true
 
+    system_command "/usr/bin/find",
+                   args: ["#{staged_path}/Polyglot Sub.app", "-name", ".DS_Store", "-delete"],
+                   sudo: true
+    
     system_command "/usr/bin/codesign",
                    args: ["--force", "--deep", "--sign", "-", "#{staged_path}/Polyglot Sub.app"],
                    sudo: true
