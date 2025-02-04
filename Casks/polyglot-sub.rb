@@ -3,7 +3,7 @@ cask "polyglot-sub" do
   sha256 ""
 
   url "https://github.com/missuo/PolyglotSub/releases/download/v#{version}/Polyglot.dmg"
-  name "PolyglotSub"
+  name "Polyglot Sub"
   desc "Subtitle translator based on DeepLX"
   homepage "https://github.com/missuo/PolyglotSub"
 
