@@ -94,7 +94,7 @@ update_polyglot-sub(){
     sha256=$(sha256sum Polyglot.dmg | cut -d ' ' -f 1)
 
     # Update the SHA256 hashes in the cask
-    sed -i "3s/.*/    sha256 \"${arm64_sha256}\"/" Casks/polyglot-sub.rb
+    sed -i "3s/.*/  sha256 \"${arm64_sha256}\"/" Casks/polyglot-sub.rb
     # Delete the new binaries
     rm -f Polyglot*
 }
