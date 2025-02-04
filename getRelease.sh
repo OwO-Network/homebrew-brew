@@ -80,6 +80,26 @@ update_imgzip(){
     rm -f imgzip_darwin*
 }
 
+update_polyglot-sub(){
+    # Get the latest version of Polyglot Sub
+    last_version=$(curl -Ls "https://api.github.com/repos/missuo/PolyglotSub/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Update version in the cask
+    sed -i "s/version \".*\"/version \"${last_version}\"/" Casks/polyglot-sub.rb
+
+    # Download the new binaries
+    wget -O Polyglot.dmg https://github.com/missuo/PolyglotSub/releases/download/v${last_version}/Polyglot.dmg
+
+    # Calculate the SHA256 hash for the new binaries
+    sha256=$(sha256sum Polyglot.dmg | cut -d ' ' -f 1)
+
+    # Update the SHA256 hashes in the cask
+    sed -i "3s/.*/    sha256 \"${arm64_sha256}\"/" Casks/polyglot-sub.rb
+    # Delete the new binaries
+    rm -f Polyglot*
+}
+
 update_deeplx
 update_claude2openai
 update_imgzip
+update_polyglot-sub
