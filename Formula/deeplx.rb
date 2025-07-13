@@ -5,10 +5,10 @@ class Deeplx < Formula
 
   if Hardware::CPU.arm?
     url "https://github.com/OwO-Network/DeepLX/releases/download/v#{version}/deeplx_darwin_arm64"
-    sha256 "b6605053ee52c437e0e369300ce1dff3ee972a1d0b1640e3ce570d695c17dca5"
+    sha256 "ecaec0d867f1b02da34d7c036d1325eede4435fb866846e5517d1248c8d68fc8"
   else
     url "https://github.com/OwO-Network/DeepLX/releases/download/v#{version}/deeplx_darwin_amd64"
-    sha256 "c4e16822892e3b31ec7de7a9cd97142ba3e460ee1585f07ca539c970cb0a9150"
+    sha256 "e0a58b4cfe0ad033fd6d71f6ef3135fdb05ae4d725f9a95ab5dc859e1d365cf8"
   end
 
   def install
