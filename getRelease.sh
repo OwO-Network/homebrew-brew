@@ -115,11 +115,34 @@ update_fixtwitter(){
     arm64_sha256=$(sha256sum fixtwitter_darwin_arm64 | cut -d ' ' -f 1)
 
     # Update the SHA256 hashes in the formula
-    sed -i "7s/.*/    sha256 \"${arm64_sha256}\"/" Formula/fixtwitter.rb
-    sed -i "10s/.*/    sha256 \"${amd64_sha256}\"/" Formula/fixtwitter.rb
+    sed -i "9s/.*/      sha256 \"${arm64_sha256}\"/" Formula/fixtwitter.rb
+    sed -i "12s/.*/      sha256 \"${amd64_sha256}\"/" Formula/fixtwitter.rb
 
     # Delete the new binaries
     rm -f fixtwitter_darwin*
+}
+
+update_fixtwitter-nosb(){
+    # Get the latest version of FixTwitter
+    last_version=$(curl -Ls "https://api.github.com/repos/missuo/FixTwitter/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Update version in the formula
+    sed -i "s/version \".*\"/version \"${last_version}\"/" Formula/fixtwitter-nosb.rb
+
+    # Download the new binaries
+    wget -O fixtwitter_nosb_darwin_amd64 https://github.com/missuo/FixTwitter/releases/download/v${last_version}/fixtwitter-darwin-amd64
+    wget -O fixtwitter_nosb_darwin_arm64 https://github.com/missuo/FixTwitter/releases/download/v${last_version}/fixtwitter-darwin-arm64
+
+    # Calculate the SHA256 hash for the new binaries
+    amd64_sha256=$(sha256sum fixtwitter_nosb_darwin_amd64 | cut -d ' ' -f 1)
+    arm64_sha256=$(sha256sum fixtwitter_nosb_darwin_arm64 | cut -d ' ' -f 1)
+
+    # Update the SHA256 hashes in the formula
+    sed -i "9s/.*/      sha256 \"${arm64_sha256}\"/" Formula/fixtwitter-nosb.rb
+    sed -i "12s/.*/      sha256 \"${amd64_sha256}\"/" Formula/fixtwitter-nosb.rb
+
+    # Delete the new binaries
+    rm -f fixtwitter_nosb_darwin*
 }
 
 update_deeplx
@@ -131,3 +154,5 @@ sleep 2
 update_polyglot-sub
 sleep 2
 update_fixtwitter
+sleep 2
+update_fixtwitter-nosb
