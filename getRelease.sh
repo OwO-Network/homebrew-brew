@@ -123,7 +123,11 @@ update_fixtwitter(){
 }
 
 update_deeplx
+sleep 2
 update_claude2openai
+sleep 2
 update_imgzip
+sleep 2
 update_polyglot-sub
+sleep 2
 update_fixtwitter
