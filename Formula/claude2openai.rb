@@ -12,7 +12,11 @@ class Claude2openai < Formula
   license "MIT"
 
   def install
-    bin.install "claude2openai"
+    if Hardware::CPU.arm?
+      bin.install "claude2openai-darwin-arm64" => "claude2openai"
+    else
+      bin.install "claude2openai-darwin-amd64" => "claude2openai"
+    end
   end
 
   service do
