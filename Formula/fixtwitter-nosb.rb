@@ -1,7 +1,7 @@
 class FixtwitterNosb < Formula
   desc "Background service that automatically replaces X.com links with no.sb in clipboard"
   homepage "https://github.com/missuo/fixtwitter"
-  version "1.0.0"
+  version "1.0.1"
 
   on_macos do
     if Hardware::CPU.arm?
