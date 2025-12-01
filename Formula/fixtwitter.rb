@@ -1,7 +1,7 @@
 class Fixtwitter < Formula
   desc "Background service that automatically replaces X.com links with fxtwitter.com in clipboard"
   homepage "https://github.com/missuo/fixtwitter"
-  version "1.0.1"
+  version "1.0.0"
 
   on_macos do
     if Hardware::CPU.arm?
