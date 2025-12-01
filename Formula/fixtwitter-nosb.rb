@@ -1,15 +1,15 @@
 class FixtwitterNosb < Formula
   desc "Background service that automatically replaces X.com links with no.sb in clipboard"
   homepage "https://github.com/missuo/fixtwitter"
-  version "1.0.1"
+  version "1.0.0"
 
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/missuo/fixtwitter/releases/download/v#{version}/fixtwitter-darwin-arm64"
-      sha256 "39286f9bcafa0b5fc495ac48f473dac91481d4ce5fdad287b80d43820b4717ae"
+      sha256 "28f9ca7d83028334c9ea6e70e76c379c4ad61a8fe4ce75145cd385c68ec56b6e"
     else
       url "https://github.com/missuo/fixtwitter/releases/download/v#{version}/fixtwitter-darwin-amd64"
-      sha256 "e2bc0c601a496d482956df39fcc43068e07e5c57443dbd6ac0f099750ed8af6d"
+      sha256 "ae73606df76b98d617f5da8ceba4db76d86242fe42c85cb8e798fa2bb99f80fe"
     end
   end
 
