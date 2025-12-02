@@ -11,16 +11,34 @@
 
 #!/bin/bash
 
+# Colors for output
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
 update_deeplx(){
-    # Get the latest version of Deeplx
+    echo "Checking DeepLX..."
+
+    # Get the latest version from GitHub API
     last_version=$(curl -Ls "https://api.github.com/repos/OwO-Network/DeepLX/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Get current version from formula
+    current_version=$(grep 'version "' Formula/deeplx.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ DeepLX is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating DeepLX from v${current_version} to v${last_version}${NC}"
 
     # Update the version number in the formula
     sed -i "s/version \".*/version \"${last_version}\"/g" Formula/deeplx.rb
 
     # Download the new binaries
-    wget -O deeplx_darwin_amd64 https://github.com/OwO-Network/DeepLX/releases/download/v${last_version}/deeplx_darwin_amd64
-    wget -O deeplx_darwin_arm64 https://github.com/OwO-Network/DeepLX/releases/download/v${last_version}/deeplx_darwin_arm64
+    wget -q -O deeplx_darwin_amd64 https://github.com/OwO-Network/DeepLX/releases/download/v${last_version}/deeplx_darwin_amd64
+    wget -q -O deeplx_darwin_arm64 https://github.com/OwO-Network/DeepLX/releases/download/v${last_version}/deeplx_darwin_arm64
 
     # Calculate the SHA256 hash for the new binaries
     amd64_sha256=$(sha256sum deeplx_darwin_amd64 | cut -d ' ' -f 1)
@@ -32,18 +50,33 @@ update_deeplx(){
 
     # Delete the new binaries
     rm -f deeplx_darwin*
+
+    echo -e "${GREEN}✓ DeepLX updated successfully${NC}"
 }
 
 update_claude2openai(){
-    # Get the latest version of Claude2OpenAI
+    echo "Checking Claude2OpenAI..."
+
+    # Get the latest version from GitHub API
     last_version=$(curl -Ls "https://api.github.com/repos/missuo/claude2openai/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Get current version from formula
+    current_version=$(grep 'version "' Formula/claude2openai.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ Claude2OpenAI is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating Claude2OpenAI from v${current_version} to v${last_version}${NC}"
 
     # Update version in the formula
     sed -i "s/version \".*\"/version \"${last_version}\"/" Formula/claude2openai.rb
 
     # Download the new binaries
-    wget -O claude2openai_darwin_amd64 https://github.com/missuo/claude2openai/releases/download/v${last_version}/claude2openai-darwin-amd64
-    wget -O claude2openai_darwin_arm64 https://github.com/missuo/claude2openai/releases/download/v${last_version}/claude2openai-darwin-arm64
+    wget -q -O claude2openai_darwin_amd64 https://github.com/missuo/claude2openai/releases/download/v${last_version}/claude2openai-darwin-amd64
+    wget -q -O claude2openai_darwin_arm64 https://github.com/missuo/claude2openai/releases/download/v${last_version}/claude2openai-darwin-arm64
 
     # Calculate the SHA256 hash for the new binaries
     amd64_sha256=$(sha256sum claude2openai_darwin_amd64 | cut -d ' ' -f 1)
@@ -55,18 +88,33 @@ update_claude2openai(){
 
     # Delete the new binaries
     rm -f claude2openai_darwin*
+
+    echo -e "${GREEN}✓ Claude2OpenAI updated successfully${NC}"
 }
 
 update_imgzip(){
-    # Get the latest version of ImgZip
+    echo "Checking ImgZip..."
+
+    # Get the latest version from GitHub API
     last_version=$(curl -Ls "https://api.github.com/repos/missuo/imgzip/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Get current version from cask
+    current_version=$(grep 'version "' Casks/imgzip.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ ImgZip is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating ImgZip from v${current_version} to v${last_version}${NC}"
 
     # Update version in the cask
     sed -i "s/version \".*\"/version \"${last_version}\"/" Casks/imgzip.rb
 
     # Download the new binaries
-    wget -O imgzip_darwin_amd64 https://github.com/missuo/imgzip/releases/download/v${last_version}/imgzip-darwin-amd64
-    wget -O imgzip_darwin_arm64 https://github.com/missuo/imgzip/releases/download/v${last_version}/imgzip-darwin-arm64
+    wget -q -O imgzip_darwin_amd64 https://github.com/missuo/imgzip/releases/download/v${last_version}/imgzip-darwin-amd64
+    wget -q -O imgzip_darwin_arm64 https://github.com/missuo/imgzip/releases/download/v${last_version}/imgzip-darwin-arm64
 
     # Calculate the SHA256 hash for the new binaries
     amd64_sha256=$(sha256sum imgzip_darwin_amd64 | cut -d ' ' -f 1)
@@ -78,37 +126,68 @@ update_imgzip(){
 
     # Delete the new binaries
     rm -f imgzip_darwin*
+
+    echo -e "${GREEN}✓ ImgZip updated successfully${NC}"
 }
 
 update_polyglot-sub(){
-    # Get the latest version of Polyglot Sub
+    echo "Checking Polyglot Sub..."
+
+    # Get the latest version from GitHub API
     last_version=$(curl -Ls "https://api.github.com/repos/missuo/PolyglotSub/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Get current version from cask
+    current_version=$(grep 'version "' Casks/polyglot-sub.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ Polyglot Sub is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating Polyglot Sub from v${current_version} to v${last_version}${NC}"
 
     # Update version in the cask
     sed -i "s/version \".*\"/version \"${last_version}\"/" Casks/polyglot-sub.rb
 
     # Download the new binaries
-    wget -O Polyglot.dmg https://github.com/missuo/PolyglotSub/releases/download/v${last_version}/Polyglot.dmg
+    wget -q -O Polyglot.dmg https://github.com/missuo/PolyglotSub/releases/download/v${last_version}/Polyglot.dmg
 
     # Calculate the SHA256 hash for the new binaries
     sha256=$(sha256sum Polyglot.dmg | cut -d ' ' -f 1)
 
     # Update the SHA256 hashes in the cask
     sed -i "3s/.*/  sha256 \"${sha256}\"/" Casks/polyglot-sub.rb
+
     # Delete the new binaries
     rm -f Polyglot*
+
+    echo -e "${GREEN}✓ Polyglot Sub updated successfully${NC}"
 }
 
 update_fixtwitter(){
-    # Get the latest version of FixTwitter
+    echo "Checking FixTwitter..."
+
+    # Get the latest version from GitHub API
     last_version=$(curl -Ls "https://api.github.com/repos/missuo/FixTwitter/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Get current version from formula
+    current_version=$(grep 'version "' Formula/fixtwitter.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ FixTwitter is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating FixTwitter from v${current_version} to v${last_version}${NC}"
 
     # Update version in the formula
     sed -i "s/version \".*\"/version \"${last_version}\"/" Formula/fixtwitter.rb
 
     # Download the new binaries
-    wget -O fixtwitter_darwin_amd64 https://github.com/missuo/FixTwitter/releases/download/v${last_version}/fixtwitter-darwin-amd64
-    wget -O fixtwitter_darwin_arm64 https://github.com/missuo/FixTwitter/releases/download/v${last_version}/fixtwitter-darwin-arm64
+    wget -q -O fixtwitter_darwin_amd64 https://github.com/missuo/FixTwitter/releases/download/v${last_version}/fixtwitter-darwin-amd64
+    wget -q -O fixtwitter_darwin_arm64 https://github.com/missuo/FixTwitter/releases/download/v${last_version}/fixtwitter-darwin-arm64
 
     # Calculate the SHA256 hash for the new binaries
     amd64_sha256=$(sha256sum fixtwitter_darwin_amd64 | cut -d ' ' -f 1)
@@ -120,18 +199,33 @@ update_fixtwitter(){
 
     # Delete the new binaries
     rm -f fixtwitter_darwin*
+
+    echo -e "${GREEN}✓ FixTwitter updated successfully${NC}"
 }
 
 update_fixtwitter-nosb(){
-    # Get the latest version of FixTwitter
+    echo "Checking FixTwitter-NoSB..."
+
+    # Get the latest version from GitHub API
     last_version=$(curl -Ls "https://api.github.com/repos/missuo/FixTwitter/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Get current version from formula
+    current_version=$(grep 'version "' Formula/fixtwitter-nosb.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ FixTwitter-NoSB is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating FixTwitter-NoSB from v${current_version} to v${last_version}${NC}"
 
     # Update version in the formula
     sed -i "s/version \".*\"/version \"${last_version}\"/" Formula/fixtwitter-nosb.rb
 
     # Download the new binaries
-    wget -O fixtwitter_nosb_darwin_amd64 https://github.com/missuo/FixTwitter/releases/download/v${last_version}/fixtwitter-darwin-amd64
-    wget -O fixtwitter_nosb_darwin_arm64 https://github.com/missuo/FixTwitter/releases/download/v${last_version}/fixtwitter-darwin-arm64
+    wget -q -O fixtwitter_nosb_darwin_amd64 https://github.com/missuo/FixTwitter/releases/download/v${last_version}/fixtwitter-darwin-amd64
+    wget -q -O fixtwitter_nosb_darwin_arm64 https://github.com/missuo/FixTwitter/releases/download/v${last_version}/fixtwitter-darwin-arm64
 
     # Calculate the SHA256 hash for the new binaries
     amd64_sha256=$(sha256sum fixtwitter_nosb_darwin_amd64 | cut -d ' ' -f 1)
@@ -143,16 +237,28 @@ update_fixtwitter-nosb(){
 
     # Delete the new binaries
     rm -f fixtwitter_nosb_darwin*
+
+    echo -e "${GREEN}✓ FixTwitter-NoSB updated successfully${NC}"
 }
 
+echo "======================================"
+echo "  Homebrew Formula Update Script"
+echo "======================================"
+echo ""
+
 update_deeplx
-sleep 2
+echo ""
 update_claude2openai
-sleep 2
+echo ""
 update_imgzip
-sleep 2
+echo ""
 update_polyglot-sub
-sleep 2
+echo ""
 update_fixtwitter
-sleep 2
+echo ""
 update_fixtwitter-nosb
+
+echo ""
+echo "======================================"
+echo "  Update Check Complete"
+echo "======================================"
