@@ -247,15 +247,15 @@ echo "======================================"
 echo ""
 
 update_deeplx
-echo ""
+sleep 5
 update_claude2openai
-echo ""
+sleep 5
 update_imgzip
-echo ""
+sleep 5
 update_polyglot-sub
-echo ""
+sleep 5
 update_fixtwitter
-echo ""
+sleep 5
 update_fixtwitter-nosb
 
 echo ""
