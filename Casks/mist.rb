@@ -126,13 +126,13 @@ paths=""
 for f in "$@"; do
   echo "Processing: $f"
   encoded=$(/usr/bin/python3 -c "import sys,urllib.parse;print(urllib.parse.quote(sys.argv[1]))" "$f")
-  [ -z "$paths" ] && paths="$encoded" || paths="$paths,$encoded"
+  [ -z "$paths" ] &amp;&amp; paths="$encoded" || paths="$paths,$encoded"
 done
 
 if [ -n "$paths" ]; then
   url="mist://files?$paths"
   echo "Opening URL: $url"
-  /usr/bin/open "$url" &
+  /usr/bin/open "$url" &amp;
   echo "Command sent"
 fi
 } >> "$LOG" 2>&1
