@@ -1,6 +1,6 @@
 cask "mist" do
-  version "1.0.7"
-  sha256 "560c6680f4e3cb2d0200c8b513b70eb7dae36d0917b5345437dc570c296a9d3c"
+  version "1.0.8"
+  sha256 "b3c6f4af33d830c96cf3cd829c69eef5d260d497968218f13a0fb355fe389b31"
 
   url "https://cdn.uid.si/Mist.dmg", verified: "uid.si/"
   name "Mist"
