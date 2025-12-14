@@ -2,7 +2,7 @@ cask "mist" do
   version "1.0.8"
   sha256 "b3c6f4af33d830c96cf3cd829c69eef5d260d497968218f13a0fb355fe389b31"
 
-  url "https://cdn.uid.si/Mist-1.0.8.dmg", verified: "uid.si/"
+  url "https://cdn.uid.si/Mist-#{version}.dmg", verified: "uid.si/"
   name "Mist"
   desc "Lightweight S3 image uploader for macOS"
   homepage "https://github.com/missuo/Mist"
@@ -20,7 +20,7 @@ cask "mist" do
     FileUtils.rm_rf(workflow_path) if File.directory?(workflow_path)
     FileUtils.mkdir_p(contents_dir)
 
-    File.write(File.join(contents_dir, "Info.plist"), <<~PLIST)
+    File.write(File.join(contents_dir, "Info.plist"), <<~'PLIST')
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
@@ -51,7 +51,7 @@ cask "mist" do
       </plist>
     PLIST
 
-    File.write(File.join(contents_dir, "document.wflow"), <<~WFLOW)
+    File.write(File.join(contents_dir, "document.wflow"), <<~'WFLOW')
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
@@ -101,7 +101,41 @@ cask "mist" do
                       <dict>
                           <key>COMMAND_STRING</key>
                           <string>LOG="/tmp/mist-service.log"
-{ echo "=== Debug Info ==="; echo "Date: $(date)"; echo "PWD: $PWD"; echo "USER: $USER"; echo "Arg count: $#"; echo "Args: $@"; echo "Arg1: $1"; echo "Arg2: $2"; echo "All args:"; for arg in "$@"; do echo "  - $arg"; done; echo ""; if [ $# -eq 0 ]; then echo "ERROR: No arguments received!"; echo "This means Automator is not passing file paths."; exit 1; fi; paths=""; for f in "$@"; do echo "Processing: $f"; encoded=$(/usr/bin/python3 -c "import sys,urllib.parse;print(urllib.parse.quote(sys.argv[1]))" "$f"); [ -z "$paths" ] &amp;&amp; paths="$encoded" || paths="$paths,$encoded"; done; if [ -n "$paths" ]; then url="mist://files?$paths"; echo "Opening URL: $url"; /usr/bin/open "$url" &amp;; echo "Command sent"; fi; } &gt;&gt; "$LOG" 2&gt;&amp;1
+{
+echo "=== Debug Info ==="
+echo "Date: $(date)"
+echo "PWD: $PWD"
+echo "USER: $USER"
+echo "Arg count: $#"
+echo "Args: $@"
+echo "Arg1: $1"
+echo "Arg2: $2"
+echo "All args:"
+for arg in "$@"; do
+  echo "  - $arg"
+done
+echo ""
+
+if [ $# -eq 0 ]; then
+  echo "ERROR: No arguments received!"
+  echo "This means Automator is not passing file paths."
+  exit 1
+fi
+
+paths=""
+for f in "$@"; do
+  echo "Processing: $f"
+  encoded=$(/usr/bin/python3 -c "import sys,urllib.parse;print(urllib.parse.quote(sys.argv[1]))" "$f")
+  [ -z "$paths" ] && paths="$encoded" || paths="$paths,$encoded"
+done
+
+if [ -n "$paths" ]; then
+  url="mist://files?$paths"
+  echo "Opening URL: $url"
+  /usr/bin/open "$url" &
+  echo "Command sent"
+fi
+} >> "$LOG" 2>&1
 exit 0
 </string>
                           <key>CheckedForUserDefaultShell</key>
