@@ -135,7 +135,7 @@ if [ -n "$paths" ]; then
   /usr/bin/open "$url" &amp;
   echo "Command sent"
 fi
-} >> "$LOG" 2>&1
+} >> "$LOG" 2&gt;&amp;1
 exit 0
 </string>
                           <key>CheckedForUserDefaultShell</key>
