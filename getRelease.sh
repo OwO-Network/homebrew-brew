@@ -241,6 +241,44 @@ update_fixtwitter-nosb(){
     echo -e "${GREEN}✓ FixTwitter-NoSB updated successfully${NC}"
 }
 
+update_xpost(){
+    echo "Checking xpost..."
+
+    # Get the latest version from GitHub API
+    last_version=$(curl -Ls "https://api.github.com/repos/missuo/xpost/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Get current version from formula
+    current_version=$(grep 'version "' Formula/xpost.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ xpost is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating xpost from v${current_version} to v${last_version}${NC}"
+
+    # Update version in the formula
+    sed -i "s/version \".*\"/version \"${last_version}\"/" Formula/xpost.rb
+
+    # Download the new binaries
+    wget -q -O xpost_darwin_amd64 https://github.com/missuo/xpost/releases/download/v${last_version}/xpost-darwin-amd64
+    wget -q -O xpost_darwin_arm64 https://github.com/missuo/xpost/releases/download/v${last_version}/xpost-darwin-arm64
+
+    # Calculate the SHA256 hash for the new binaries
+    amd64_sha256=$(sha256sum xpost_darwin_amd64 | cut -d ' ' -f 1)
+    arm64_sha256=$(sha256sum xpost_darwin_arm64 | cut -d ' ' -f 1)
+
+    # Update the SHA256 hashes in the formula
+    sed -i "7s/.*/    sha256 \"${arm64_sha256}\"/" Formula/xpost.rb
+    sed -i "10s/.*/    sha256 \"${amd64_sha256}\"/" Formula/xpost.rb
+
+    # Delete the new binaries
+    rm -f xpost_darwin*
+
+    echo -e "${GREEN}✓ xpost updated successfully${NC}"
+}
+
 echo "======================================"
 echo "  Homebrew Formula Update Script"
 echo "======================================"
@@ -257,6 +295,8 @@ sleep 5
 update_fixtwitter
 sleep 5
 update_fixtwitter-nosb
+sleep 5
+update_xpost
 
 echo ""
 echo "======================================"
