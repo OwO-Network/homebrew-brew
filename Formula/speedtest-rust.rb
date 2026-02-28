@@ -1,13 +1,13 @@
 class SpeedtestRust < Formula
   desc "Speedtest CLI powered by Apple CDN, written in Rust"
   homepage "https://github.com/missuo/speedtest-rust"
-  version "1.0.3"
+  version "1.0.4"
   if Hardware::CPU.arm?
     url "https://github.com/missuo/speedtest-rust/releases/download/v#{version}/speedtest-darwin-arm64"
-    sha256 "4c0a7d7f8d416447f0054bc786175e8f82573c1d2b00da48d2a1c491db3ef7ff"
+    sha256 "480641b0cb8d5b9a9439372e8bc339882cc29de5b82fd8f29c26b548021c44da"
   else
     url "https://github.com/missuo/speedtest-rust/releases/download/v#{version}/speedtest-darwin-amd64"
-    sha256 "1fc40cea364523ad4e434405982ffc07a659e1fdd6459d515339e44bca66bae5"
+    sha256 "f670a16f3de2535627b5e9a39c55a318488a2d1028a43e584950004af9823bfe"
   end
   license "MIT"
 
