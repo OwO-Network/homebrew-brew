@@ -317,6 +317,44 @@ update_xpost(){
     echo -e "${GREEN}✓ xpost updated successfully${NC}"
 }
 
+update_speedtest-rust(){
+    echo "Checking speedtest-rust..."
+
+    # Get the latest version from GitHub API
+    last_version=$(curl -Ls "https://api.github.com/repos/missuo/speedtest-rust/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Get current version from formula
+    current_version=$(grep 'version "' Formula/speedtest-rust.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ speedtest-rust is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating speedtest-rust from v${current_version} to v${last_version}${NC}"
+
+    # Update version in the formula
+    sed -i "s/version \".*\"/version \"${last_version}\"/" Formula/speedtest-rust.rb
+
+    # Download the new binaries
+    wget -q -O speedtest_darwin_amd64 https://github.com/missuo/speedtest-rust/releases/download/v${last_version}/speedtest-darwin-amd64
+    wget -q -O speedtest_darwin_arm64 https://github.com/missuo/speedtest-rust/releases/download/v${last_version}/speedtest-darwin-arm64
+
+    # Calculate the SHA256 hash for the new binaries
+    amd64_sha256=$(sha256sum speedtest_darwin_amd64 | cut -d ' ' -f 1)
+    arm64_sha256=$(sha256sum speedtest_darwin_arm64 | cut -d ' ' -f 1)
+
+    # Update the SHA256 hashes in the formula
+    sed -i "7s/.*/    sha256 \"${arm64_sha256}\"/" Formula/speedtest-rust.rb
+    sed -i "10s/.*/    sha256 \"${amd64_sha256}\"/" Formula/speedtest-rust.rb
+
+    # Delete the new binaries
+    rm -f speedtest_darwin*
+
+    echo -e "${GREEN}✓ speedtest-rust updated successfully${NC}"
+}
+
 echo "======================================"
 echo "  Homebrew Formula Update Script"
 echo "======================================"
@@ -337,6 +375,8 @@ sleep 5
 update_xpost
 sleep 5
 update_rdap
+sleep 5
+update_speedtest-rust
 
 echo ""
 echo "======================================"
