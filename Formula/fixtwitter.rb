@@ -1,15 +1,15 @@
 class Fixtwitter < Formula
   desc "Background service that automatically replaces X.com links with fxtwitter.com in clipboard"
   homepage "https://github.com/missuo/fixtwitter"
-  version "1.0.1"
+  version "1.0.2"
 
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/missuo/fixtwitter/releases/download/v#{version}/fixtwitter-darwin-arm64"
-      sha256 "39286f9bcafa0b5fc495ac48f473dac91481d4ce5fdad287b80d43820b4717ae"
+      sha256 "f76110049c15ddfb9533e7632818691169649f7230d9b657a7ca2e87acf50991"
     else
       url "https://github.com/missuo/fixtwitter/releases/download/v#{version}/fixtwitter-darwin-amd64"
-      sha256 "e2bc0c601a496d482956df39fcc43068e07e5c57443dbd6ac0f099750ed8af6d"
+      sha256 "96afbd65d09c59315eab9a701b5432b26b941ec1aba68fd84d1565cc6cd4cd1c"
     end
   end
 
