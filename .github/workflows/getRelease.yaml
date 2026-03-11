@@ -6,14 +6,17 @@ on:
   #- cron: '30 0 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build: 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
       - name: Run Shell
         run: |
           bash getRelease.sh
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: update release version

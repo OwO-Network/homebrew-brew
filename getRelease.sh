@@ -355,6 +355,44 @@ update_speedtest-rust(){
     echo -e "${GREEN}✓ speedtest-rust updated successfully${NC}"
 }
 
+update_mailclaw(){
+    echo "Checking mailclaw..."
+
+    # Get the latest version from GitHub API
+    last_version=$(curl -Ls "https://api.github.com/repos/missuo/mailclaw/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Get current version from formula
+    current_version=$(grep 'version "' Formula/mailclaw.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ mailclaw is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating mailclaw from v${current_version} to v${last_version}${NC}"
+
+    # Update version in the formula
+    sed -i "s/version \".*\"/version \"${last_version}\"/" Formula/mailclaw.rb
+
+    # Download the new binaries
+    wget -q -O mailclaw_darwin_arm64 https://github.com/missuo/mailclaw/releases/download/v${last_version}/mailclaw-v${last_version}-aarch64-apple-darwin
+    wget -q -O mailclaw_darwin_amd64 https://github.com/missuo/mailclaw/releases/download/v${last_version}/mailclaw-v${last_version}-x86_64-apple-darwin
+
+    # Calculate the SHA256 hash for the new binaries
+    arm64_sha256=$(sha256sum mailclaw_darwin_arm64 | cut -d ' ' -f 1)
+    amd64_sha256=$(sha256sum mailclaw_darwin_amd64 | cut -d ' ' -f 1)
+
+    # Update the SHA256 hashes in the formula
+    sed -i "7s/.*/    sha256 \"${arm64_sha256}\"/" Formula/mailclaw.rb
+    sed -i "10s/.*/    sha256 \"${amd64_sha256}\"/" Formula/mailclaw.rb
+
+    # Delete the new binaries
+    rm -f mailclaw_darwin*
+
+    echo -e "${GREEN}✓ mailclaw updated successfully${NC}"
+}
+
 echo "======================================"
 echo "  Homebrew Formula Update Script"
 echo "======================================"
@@ -377,6 +415,8 @@ sleep 5
 update_rdap
 sleep 5
 update_speedtest-rust
+sleep 5
+update_mailclaw
 
 echo ""
 echo "======================================"

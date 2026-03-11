@@ -23,6 +23,7 @@ brew tap owo-network/brew
 
 ## Install
 - [OwO-Network/DeepLX](https://github.com/OwO-Network/DeepLX#homebrew-recommended)
+- [missuo/mailclaw](https://github.com/missuo/mailclaw)
 
 ## Uninstall
 ```shell
