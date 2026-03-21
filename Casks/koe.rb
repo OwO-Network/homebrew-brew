@@ -11,4 +11,9 @@ cask "koe" do
   depends_on macos: ">= :ventura"
 
   app "Koe.app"
+
+  postflight do
+    system_command "/usr/bin/xattr",
+                   args: ["-rd", "com.apple.quarantine", "#{appdir}/Koe.app"]
+  end
 end
