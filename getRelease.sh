@@ -165,6 +165,45 @@ update_polyglot-sub(){
     echo -e "${GREEN}✓ Polyglot Sub updated successfully${NC}"
 }
 
+update_koe(){
+    echo "Checking Koe..."
+
+    # Get the latest version from GitHub API
+    last_version=$(curl -Ls "https://api.github.com/repos/missuo/koe/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Get current version from cask
+    current_version=$(grep 'version "' Casks/koe.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ Koe is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating Koe from v${current_version} to v${last_version}${NC}"
+
+    # Update version in the cask
+    sed -i "s/version \".*\"/version \"${last_version}\"/" Casks/koe.rb
+
+    # Download the new binaries
+    if ! wget -q -O Koe-macOS-arm64.zip https://github.com/missuo/koe/releases/download/v${last_version}/Koe-macOS-arm64.zip; then
+        echo -e "${YELLOW}✗ Failed to download Koe release asset${NC}"
+        rm -f Koe-macOS-arm64.zip
+        return 1
+    fi
+
+    # Calculate the SHA256 hash for the new binaries
+    sha256=$(sha256sum Koe-macOS-arm64.zip | cut -d ' ' -f 1)
+
+    # Update the SHA256 hashes in the cask
+    sed -i "s/sha256 \".*\"/sha256 \"${sha256}\"/" Casks/koe.rb
+
+    # Delete the new binaries
+    rm -f Koe-macOS-arm64.zip
+
+    echo -e "${GREEN}✓ Koe updated successfully${NC}"
+}
+
 update_fixtwitter(){
     echo "Checking FixTwitter..."
 
@@ -443,6 +482,8 @@ sleep 5
 update_imgzip
 sleep 5
 update_polyglot-sub
+sleep 5
+update_koe
 sleep 5
 update_fixtwitter
 sleep 5
