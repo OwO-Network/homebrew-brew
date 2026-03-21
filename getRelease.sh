@@ -195,9 +195,11 @@ update_koe(){
     # Calculate the SHA256 hash for the new binaries
     sha256=$(sha256sum Koe-macOS-arm64.zip | cut -d ' ' -f 1)
 
-    # Update the SHA256 hashes in the cask
-    sed -i "s/sha256 \".*\"/sha256 \"${sha256}\"/" Casks/koe.rb
+    # Determine the line number of the sha256 stanza to update
+    sha_line=$(grep -n 'sha256 "' Casks/koe.rb | head -n 1 | cut -d ':' -f 1)
 
+    # Update the SHA256 hash in the cask on the specific line
+    sed -i "${sha_line}s/sha256 \".*\"/sha256 \"${sha256}\"/" Casks/koe.rb
     # Delete the new binaries
     rm -f Koe-macOS-arm64.zip
 
