@@ -16,4 +16,11 @@ cask "koe" do
     system_command "/usr/bin/xattr",
                    args: ["-rd", "com.apple.quarantine", "#{appdir}/Koe.app"]
   end
+
+  uninstall_postflight do
+    puts "Note: Koe configuration files in ~/.koe have been preserved."
+    puts "To remove them manually, run: rm -rf ~/.koe"
+  end
+
+  zap trash: "~/.koe"
 end
