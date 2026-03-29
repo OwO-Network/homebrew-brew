@@ -12,14 +12,30 @@ cask "koe" do
 
   app "Koe.app"
 
+  uninstall_preflight do
+    koe_dir = File.expand_path("~/.koe")
+    koe_backup = File.expand_path("~/.koe.upgrade_backup")
+    next unless File.directory?(koe_dir)
+
+    system_command "/bin/cp",
+                   args: ["-r", koe_dir, koe_backup]
+  end
+
   postflight do
     system_command "/usr/bin/xattr",
                    args: ["-rd", "com.apple.quarantine", "#{appdir}/Koe.app"]
-  end
 
-  uninstall_postflight do
-    puts "Note: Koe configuration files in ~/.koe have been preserved."
-    puts "To remove them manually, run: rm -rf ~/.koe"
+    koe_dir = File.expand_path("~/.koe")
+    koe_backup = File.expand_path("~/.koe.upgrade_backup")
+    next unless File.directory?(koe_backup)
+
+    unless File.directory?(koe_dir)
+      system_command "/bin/mv",
+                     args: [koe_backup, koe_dir]
+    else
+      system_command "/bin/rm",
+                     args: ["-rf", koe_backup]
+    end
   end
 
   zap trash: "~/.koe"
