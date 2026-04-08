@@ -1,6 +1,6 @@
 cask "koe" do
   version "1.0.14"
-  sha256 "814f7e3930bc1c7a801274369770b692aafbb86f86dc54401dee71a49f1c609c"
+  sha256 "667317b59118ca54959d49ba1413a1b9f143a6f12c224f4ed66aea3964449fc4"
 
   url "https://github.com/missuo/koe/releases/download/v#{version}/Koe-macOS-arm64.zip"
   name "Koe"
@@ -11,6 +11,7 @@ cask "koe" do
   depends_on macos: ">= :ventura"
 
   app "Koe.app"
+  binary "#{appdir}/Koe.app/Contents/MacOS/koe-cli", target: "koe"
 
   uninstall_preflight do
     koe_dir = File.expand_path("~/.koe")
