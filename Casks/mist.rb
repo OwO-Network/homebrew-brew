@@ -1,6 +1,6 @@
 cask "mist" do
-  version "1.0.13"
-  sha256 "7c3d90983ff298152e54651ec2157024c28be0e87474cadc906d306fa6b04dc2"
+  version "1.0.14"
+  sha256 "94f98d52856dcf59009d7f198d0f1d7f89f2ee4d20140dcb1bb7fb8de8cea99b"
 
   url "https://cdn.uid.si/Mist-#{version}.dmg", verified: "uid.si/"
   name "Mist"
@@ -11,6 +11,13 @@ cask "mist" do
 
   postflight do
     require "fileutils"
+
+    # Mist.app is unsigned. Strip the quarantine attribute so users can
+    # launch it without the "damaged / can't be opened" Gatekeeper prompt.
+    app_path = "#{appdir}/Mist.app"
+    system_command "/usr/bin/xattr",
+                   args: ["-dr", "com.apple.quarantine", app_path],
+                   must_succeed: false
 
     services_dir = File.expand_path("~/Library/Services")
     workflow_path = File.join(services_dir, "Upload to Mist.workflow")
