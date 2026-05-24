@@ -38,7 +38,7 @@ below.
 
 | Name | Description | Install command |
 | --- | --- | --- |
-| [ai](https://github.com/missuo/ai-cli) | Tiny command-line launcher for local AI coding agents | `brew install owo-network/brew/ai` |
+| [ai](https://github.com/missuo/ai-cli) | Launch Claude Code or Codex in YOLO mode from one command | `brew install owo-network/brew/ai` |
 | [claude2openai](https://github.com/missuo/claude2openai) | A proxy to convert Claude API into OpenAI API format | `brew install owo-network/brew/claude2openai` |
 | [coffer](https://github.com/missuo/coffer) | A simple, fast, and secure key-value store | `brew install owo-network/brew/coffer` |
 | [deeplx](https://github.com/OwO-Network/DeepLX) | DeepLX is a permanently free DeepL API client written in Golang. | `brew install owo-network/brew/deeplx` |

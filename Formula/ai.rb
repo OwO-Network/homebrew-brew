@@ -1,5 +1,5 @@
 class Ai < Formula
-  desc "Tiny command-line launcher for local AI coding agents"
+  desc "Launch Claude Code or Codex in YOLO mode from one command"
   homepage "https://github.com/missuo/ai-cli"
   version "1.0.0"
   license "MIT"
