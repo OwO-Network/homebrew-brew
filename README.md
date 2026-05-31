@@ -47,6 +47,7 @@ below.
 | [mailclaw](https://github.com/missuo/mailclaw) | CLI for interacting with a MailClaw inbox API | `brew install owo-network/brew/mailclaw` |
 | [rdap](https://github.com/xtomcom/rdap) | A command-line RDAP client for querying domain, IP, and ASN information | `brew install owo-network/brew/rdap` |
 | [speedtest-rust](https://github.com/missuo/speedtest-rust) | Speedtest CLI powered by Apple CDN, written in Rust | `brew install owo-network/brew/speedtest-rust` |
+| [tokens](https://github.com/missuo/tokens) | Track and compete on AI coding-assistant token usage | `brew install owo-network/brew/tokens` |
 | [us-visa](https://github.com/missuo/USVisaWaitTimes) | A tool for checking US visa wait times | `brew install owo-network/brew/us-visa` |
 | [xpost](https://github.com/missuo/xpost) | A command-line tool and HTTP API for posting to X (Twitter) | `brew install owo-network/brew/xpost` |
 

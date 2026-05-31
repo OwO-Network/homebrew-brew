@@ -472,6 +472,43 @@ update_mailclaw(){
     echo -e "${GREEN}✓ mailclaw updated successfully${NC}"
 }
 
+update_tokens(){
+    echo "Checking Tokens..."
+
+    # Get the latest version from GitHub API
+    last_version=$(curl -Ls "https://api.github.com/repos/missuo/tokens/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Get current version from formula
+    current_version=$(grep 'version "' Formula/tokens.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ Tokens is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating Tokens from v${current_version} to v${last_version}${NC}"
+
+    # Update the version number in the formula
+    sed -i "s/version \".*\"/version \"${last_version}\"/" Formula/tokens.rb
+
+    # The release publishes a `<archive>.sha256` sidecar for every target, so
+    # fetch each one and rewrite the sha256 line that immediately follows the
+    # matching url line (robust to line shifts as the formula evolves).
+    base="https://github.com/missuo/tokens/releases/download/v${last_version}"
+    for target in aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu; do
+        sha256=$(curl -Ls "${base}/tokens-v${last_version}-${target}.sha256" | cut -d ' ' -f 1)
+        url_line=$(grep -n "${target}.tar.gz" Formula/tokens.rb | head -1 | cut -d ':' -f 1)
+        if [ -n "$sha256" ] && [ -n "$url_line" ]; then
+            sed -i "$((url_line + 1))s|.*|      sha256 \"${sha256}\"|" Formula/tokens.rb
+        else
+            echo -e "${YELLOW}  ! skipped ${target} (sha=${sha256:-empty}, line=${url_line:-none})${NC}"
+        fi
+    done
+
+    echo -e "${GREEN}✓ Tokens updated successfully${NC}"
+}
+
 echo "======================================"
 echo "  Homebrew Formula Update Script"
 echo "======================================"
@@ -500,6 +537,8 @@ sleep 5
 update_coffer
 sleep 5
 update_mailclaw
+sleep 5
+update_tokens
 
 echo ""
 echo "======================================"
