@@ -8,7 +8,7 @@ cask "koe" do
   homepage "https://github.com/missuo/koe"
 
   depends_on arch: :arm64
-  depends_on macos: ">= :ventura"
+  depends_on macos: :ventura
 
   app "Koe.app"
   binary "#{appdir}/Koe.app/Contents/MacOS/koe-cli", target: "koe"
