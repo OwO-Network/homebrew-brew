@@ -15,7 +15,7 @@ cask "imgzip" do
   desc "A simple and efficient image compression tool"
   homepage "https://github.com/missuo/imgzip"
   
-  depends_on macos: ">= :catalina"
+  depends_on macos: :catalina
   postflight do
     system "xattr", "-d", "com.apple.quarantine", "#{HOMEBREW_PREFIX}/bin/imgzip"
   end
