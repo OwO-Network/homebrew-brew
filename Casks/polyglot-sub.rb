@@ -8,7 +8,7 @@ cask "polyglot-sub" do
   homepage "https://github.com/missuo/PolyglotSub"
 
   auto_updates true
-  depends_on macos: ">= :monterey"
+  depends_on macos: :monterey
 
   app "Polyglot Sub.app"
 
