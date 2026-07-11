@@ -2,7 +2,7 @@
  * @Author: Vincent Young
  * @Date: 2023-02-07 03:06:58
  * @LastEditors: Vincent Young
- * @LastEditTime: 2023-03-03 02:12:55
+ * @LastEditTime: 2026-07-11 00:00:00
  * @FilePath: /homebrew-brew/README.md
  * @Telegram: https://t.me/missuo
  * 
@@ -38,7 +38,7 @@ below.
 
 | Name | Description | Install command |
 | --- | --- | --- |
-| [ai](https://github.com/missuo/ai-cli) | Launch Claude Code or Codex in YOLO mode from one command | `brew install owo-network/brew/ai` |
+| [ai](https://github.com/missuo/ai-cli) | Launch Claude Code, Codex, or Grok in YOLO mode from one command | `brew install owo-network/brew/ai` |
 | [claude2openai](https://github.com/missuo/claude2openai) | A proxy to convert Claude API into OpenAI API format | `brew install owo-network/brew/claude2openai` |
 | [coffer](https://github.com/missuo/coffer) | A simple, fast, and secure key-value store | `brew install owo-network/brew/coffer` |
 | [deeplx](https://github.com/OwO-Network/DeepLX) | DeepLX is a permanently free DeepL API client written in Golang. | `brew install owo-network/brew/deeplx` |
@@ -47,7 +47,7 @@ below.
 | [mailclaw](https://github.com/missuo/mailclaw) | CLI for interacting with a MailClaw inbox API | `brew install owo-network/brew/mailclaw` |
 | [rdap](https://github.com/xtomcom/rdap) | A command-line RDAP client for querying domain, IP, and ASN information | `brew install owo-network/brew/rdap` |
 | [speedtest-rust](https://github.com/missuo/speedtest-rust) | Speedtest CLI powered by Apple CDN, written in Rust | `brew install owo-network/brew/speedtest-rust` |
-| [tokens](https://github.com/missuo/tokens) | Track and compete on AI coding-assistant token usage | `brew install owo-network/brew/tokens` |
+| [tokens](https://tokens.ci) | Track and compete on AI coding-assistant token usage | `brew install owo-network/brew/tokens` |
 | [us-visa](https://github.com/missuo/USVisaWaitTimes) | A tool for checking US visa wait times | `brew install owo-network/brew/us-visa` |
 | [xpost](https://github.com/missuo/xpost) | A command-line tool and HTTP API for posting to X (Twitter) | `brew install owo-network/brew/xpost` |
 
