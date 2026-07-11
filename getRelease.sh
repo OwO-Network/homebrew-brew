@@ -509,6 +509,51 @@ update_tokens(){
     echo -e "${GREEN}✓ Tokens updated successfully${NC}"
 }
 
+update_ai(){
+    echo "Checking ai..."
+
+    # Get the latest version from GitHub API
+    last_version=$(curl -Ls "https://api.github.com/repos/missuo/ai-cli/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+
+    # Get current version from formula
+    current_version=$(grep 'version "' Formula/ai.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ ai is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating ai from v${current_version} to v${last_version}${NC}"
+
+    # Update version in the formula
+    sed -i "s/version \".*\"/version \"${last_version}\"/" Formula/ai.rb
+
+    # Download release binaries and rewrite the sha256 line that follows each
+    # matching url line (covers macOS + Linux targets in Formula/ai.rb).
+    base="https://github.com/missuo/ai-cli/releases/download/v${last_version}"
+    for target in darwin-arm64 darwin-amd64 linux-arm64 linux-amd64; do
+        asset="ai-${target}"
+        if ! wget -q -O "${asset}" "${base}/${asset}"; then
+            echo -e "${YELLOW}✗ Failed to download ${asset}${NC}"
+            rm -f "${asset}"
+            return 1
+        fi
+
+        sha256=$(sha256sum "${asset}" | cut -d ' ' -f 1)
+        url_line=$(grep -n "${asset}" Formula/ai.rb | head -1 | cut -d ':' -f 1)
+        if [ -n "$sha256" ] && [ -n "$url_line" ]; then
+            sed -i "$((url_line + 1))s/sha256 \".*\"/sha256 \"${sha256}\"/" Formula/ai.rb
+        else
+            echo -e "${YELLOW}  ! skipped ${target} (sha=${sha256:-empty}, line=${url_line:-none})${NC}"
+        fi
+
+        rm -f "${asset}"
+    done
+
+    echo -e "${GREEN}✓ ai updated successfully${NC}"
+}
+
 echo "======================================"
 echo "  Homebrew Formula Update Script"
 echo "======================================"
@@ -539,6 +584,8 @@ sleep 5
 update_mailclaw
 sleep 5
 update_tokens
+sleep 5
+update_ai
 
 echo ""
 echo "======================================"
