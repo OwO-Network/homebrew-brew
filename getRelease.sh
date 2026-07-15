@@ -11,16 +11,68 @@
 
 #!/bin/bash
 
+set -Eeuo pipefail
+
 # Colors for output
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+GITHUB_API_HEADERS=(-H "Accept: application/vnd.github+json")
+if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+    GITHUB_API_HEADERS+=(-H "Authorization: Bearer ${GITHUB_TOKEN}")
+fi
+GITHUB_API_BASE_URL="${GITHUB_API_URL:-https://api.github.com}"
+
+latest_release_version(){
+    local repo="$1"
+    local response
+    local tag
+
+    response=$(curl --fail --silent --show-error --location \
+        "${GITHUB_API_HEADERS[@]}" \
+        "${GITHUB_API_BASE_URL}/repos/${repo}/releases/latest")
+    tag=$(printf '%s\n' "$response" | sed -nE 's/.*"tag_name":[[:space:]]*"([^"]+)".*/\1/p' | head -n 1)
+
+    if [[ -z "$tag" ]]; then
+        echo "GitHub returned no release tag for ${repo}" >&2
+        return 1
+    fi
+
+    printf '%s\n' "${tag#v}"
+}
+
+validate_formulae(){
+    local invalid=0
+    local file
+    local line
+    local content
+    local sha
+
+    if grep -RInE 'version ""' Formula Casks; then
+        echo "Refusing to commit an empty formula version" >&2
+        invalid=1
+    fi
+
+    while IFS=: read -r file line content; do
+        sha="${content#*sha256 \"}"
+        sha="${sha%%\"*}"
+        if [[ ! "$sha" =~ ^[0-9a-f]{64}$ ]]; then
+            echo "Invalid sha256 in ${file}:${line}: ${sha}" >&2
+            invalid=1
+        fi
+    done < <(grep -RIn 'sha256 "' Formula Casks)
+
+    if (( invalid != 0 )); then
+        return 1
+    fi
+}
+
 update_deeplx(){
     echo "Checking DeepLX..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/OwO-Network/DeepLX/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "OwO-Network/DeepLX")
 
     # Get current version from formula
     current_version=$(grep 'version "' Formula/deeplx.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -58,7 +110,7 @@ update_claude2openai(){
     echo "Checking Claude2OpenAI..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/missuo/claude2openai/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "missuo/claude2openai")
 
     # Get current version from formula
     current_version=$(grep 'version "' Formula/claude2openai.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -96,7 +148,7 @@ update_imgzip(){
     echo "Checking ImgZip..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/missuo/imgzip/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "missuo/imgzip")
 
     # Get current version from cask
     current_version=$(grep 'version "' Casks/imgzip.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -134,7 +186,7 @@ update_polyglot-sub(){
     echo "Checking Polyglot Sub..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/missuo/PolyglotSub/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "missuo/PolyglotSub")
 
     # Get current version from cask
     current_version=$(grep 'version "' Casks/polyglot-sub.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -169,7 +221,7 @@ update_koe(){
     echo "Checking Koe..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/missuo/koe/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "missuo/koe")
 
     # Get current version from cask
     current_version=$(grep 'version "' Casks/koe.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -210,7 +262,7 @@ update_fixtwitter(){
     echo "Checking FixTwitter..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/missuo/FixTwitter/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "missuo/FixTwitter")
 
     # Get current version from formula
     current_version=$(grep 'version "' Formula/fixtwitter.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -248,7 +300,7 @@ update_fixtwitter-nosb(){
     echo "Checking FixTwitter-NoSB..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/missuo/FixTwitter/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "missuo/FixTwitter")
 
     # Get current version from formula
     current_version=$(grep 'version "' Formula/fixtwitter-nosb.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -286,7 +338,7 @@ update_rdap(){
     echo "Checking rdap..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/xtomcom/rdap/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "xtomcom/rdap")
 
     # Get current version from formula
     current_version=$(grep 'version "' Formula/rdap.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -324,7 +376,7 @@ update_xpost(){
     echo "Checking xpost..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/missuo/xpost/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "missuo/xpost")
 
     # Get current version from formula
     current_version=$(grep 'version "' Formula/xpost.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -362,7 +414,7 @@ update_speedtest-rust(){
     echo "Checking speedtest-rust..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/missuo/speedtest-rust/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "missuo/speedtest-rust")
 
     # Get current version from formula
     current_version=$(grep 'version "' Formula/speedtest-rust.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -400,7 +452,7 @@ update_coffer(){
     echo "Checking coffer..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/missuo/coffer/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "missuo/coffer")
 
     # Get current version from formula
     current_version=$(grep 'version "' Formula/coffer.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -438,7 +490,7 @@ update_mailclaw(){
     echo "Checking mailclaw..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/missuo/mailclaw/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "missuo/mailclaw")
 
     # Get current version from formula
     current_version=$(grep 'version "' Formula/mailclaw.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -476,7 +528,7 @@ update_tokens(){
     echo "Checking Tokens..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/missuo/tokens/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "missuo/tokens")
 
     # Get current version from formula
     current_version=$(grep 'version "' Formula/tokens.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -497,12 +549,14 @@ update_tokens(){
     # matching url line (robust to line shifts as the formula evolves).
     base="https://github.com/missuo/tokens/releases/download/v${last_version}"
     for target in aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu; do
-        sha256=$(curl -Ls "${base}/tokens-v${last_version}-${target}.sha256" | cut -d ' ' -f 1)
+        sha256=$(curl --fail --silent --show-error --location \
+            "${base}/tokens-v${last_version}-${target}.sha256" | cut -d ' ' -f 1)
         url_line=$(grep -n "${target}.tar.gz" Formula/tokens.rb | head -1 | cut -d ':' -f 1)
-        if [ -n "$sha256" ] && [ -n "$url_line" ]; then
+        if [[ "$sha256" =~ ^[0-9a-f]{64}$ ]] && [ -n "$url_line" ]; then
             sed -i "$((url_line + 1))s|.*|      sha256 \"${sha256}\"|" Formula/tokens.rb
         else
-            echo -e "${YELLOW}  ! skipped ${target} (sha=${sha256:-empty}, line=${url_line:-none})${NC}"
+            echo -e "${YELLOW}✗ Invalid Tokens asset metadata for ${target} (sha=${sha256:-empty}, line=${url_line:-none})${NC}"
+            return 1
         fi
     done
 
@@ -513,7 +567,7 @@ update_ai(){
     echo "Checking ai..."
 
     # Get the latest version from GitHub API
-    last_version=$(curl -Ls "https://api.github.com/repos/missuo/ai-cli/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//g')
+    last_version=$(latest_release_version "missuo/ai-cli")
 
     # Get current version from formula
     current_version=$(grep 'version "' Formula/ai.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -554,40 +608,48 @@ update_ai(){
     echo -e "${GREEN}✓ ai updated successfully${NC}"
 }
 
-echo "======================================"
-echo "  Homebrew Formula Update Script"
-echo "======================================"
-echo ""
+main(){
+    echo "======================================"
+    echo "  Homebrew Formula Update Script"
+    echo "======================================"
+    echo ""
 
-update_deeplx
-sleep 5
-update_claude2openai
-sleep 5
-update_imgzip
-sleep 5
-update_polyglot-sub
-sleep 5
-update_koe
-sleep 5
-update_fixtwitter
-sleep 5
-update_fixtwitter-nosb
-sleep 5
-update_xpost
-sleep 5
-update_rdap
-sleep 5
-update_speedtest-rust
-sleep 5
-update_coffer
-sleep 5
-update_mailclaw
-sleep 5
-update_tokens
-sleep 5
-update_ai
+    update_deeplx
+    sleep 5
+    update_claude2openai
+    sleep 5
+    update_imgzip
+    sleep 5
+    update_polyglot-sub
+    sleep 5
+    update_koe
+    sleep 5
+    update_fixtwitter
+    sleep 5
+    update_fixtwitter-nosb
+    sleep 5
+    update_xpost
+    sleep 5
+    update_rdap
+    sleep 5
+    update_speedtest-rust
+    sleep 5
+    update_coffer
+    sleep 5
+    update_mailclaw
+    sleep 5
+    update_tokens
+    sleep 5
+    update_ai
 
-echo ""
-echo "======================================"
-echo "  Update Check Complete"
-echo "======================================"
+    validate_formulae
+
+    echo ""
+    echo "======================================"
+    echo "  Update Check Complete"
+    echo "======================================"
+}
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi
