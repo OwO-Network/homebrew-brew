@@ -1,6 +1,6 @@
 cask "polyglot-sub" do
-  version "1.0"
-  sha256 "d2be328a89db813bd1609237062d0a4b69462c9173417f51260f12f2753662be"
+  version ""
+  sha256 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
   url "https://github.com/missuo/PolyglotSub/releases/download/v#{version}/Polyglot.dmg"
   name "Polyglot Sub"

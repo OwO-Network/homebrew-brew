@@ -1,13 +1,13 @@
 class Coffer < Formula
   desc "A simple, fast, and secure key-value store"
   homepage "https://github.com/missuo/coffer"
-  version "0.0.1"
+  version ""
   if Hardware::CPU.arm?
     url "https://github.com/missuo/coffer/releases/download/v#{version}/coffer-aarch64-apple-darwin"
-    sha256 "2a7e4ab6fb6b5de468efda0a59e4020e1c9d388d4b2c0a235a1f7285b0376473"
+    sha256 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   else
     url "https://github.com/missuo/coffer/releases/download/v#{version}/coffer-x86_64-apple-darwin"
-    sha256 "efa267c126812b1c4039acd06c35efa850909ac39af901aee78d17fa8e39227f"
+    sha256 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   end
   license "MIT"
 

@@ -1,13 +1,13 @@
 class Claude2openai < Formula
   desc "A proxy to convert Claude API into OpenAI API format"
   homepage "https://github.com/missuo/claude2openai"
-  version "1.0.5"
+  version ""
   if Hardware::CPU.arm?
     url "https://github.com/missuo/claude2openai/releases/download/v#{version}/claude2openai-darwin-arm64"
-    sha256 "4d531876585d71026b39e38c51ef063ff9db75249fbad371035d5eca478c9b73"
+    sha256 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   else
     url "https://github.com/missuo/claude2openai/releases/download/v#{version}/claude2openai-darwin-amd64"
-    sha256 "4e00486756816d9283725ba80769d369ee7ed3a223ecbc796e964dfeba8e3842"
+    sha256 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   end
   license "MIT"
 
