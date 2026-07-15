@@ -1,7 +1,7 @@
 class Ai < Formula
   desc "Launch Claude Code, Codex, or Grok in YOLO mode from one command"
   homepage "https://github.com/missuo/ai-cli"
-  version ""
+  version "1.0.1"
   license "MIT"
 
   if OS.mac?

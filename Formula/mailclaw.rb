@@ -1,13 +1,13 @@
 class Mailclaw < Formula
   desc "CLI for interacting with a MailClaw inbox API"
   homepage "https://github.com/missuo/mailclaw"
-  version ""
+  version "1.0.2"
   if Hardware::CPU.arm?
     url "https://github.com/missuo/mailclaw/releases/download/v#{version}/mailclaw-v#{version}-aarch64-apple-darwin"
-    sha256 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    sha256 "90e04d0e0e84e5c749dd6f5deb95331a8b532bb2ec4afbfb48c7ac59f3ccec32"
   else
     url "https://github.com/missuo/mailclaw/releases/download/v#{version}/mailclaw-v#{version}-x86_64-apple-darwin"
-    sha256 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    sha256 "86394765330bdca15f0e62584d01f591641150875a902f9ec569f65b002954dc"
   end
   license "MIT"
 
