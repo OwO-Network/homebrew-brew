@@ -1,28 +1,28 @@
 class Tokens < Formula
   desc "Track and compete on AI coding-assistant token usage"
   homepage "https://tokens.ci"
-  version "3.0.3"
+  version "3.1.0"
   license "MIT"
 
   on_macos do
     on_arm do
       url "https://github.com/missuo/tokens/releases/download/v#{version}/tokens-v#{version}-aarch64-apple-darwin.tar.gz"
-      sha256 "b1523f01cdfe3fbf122cdc0dc81e03ee847d21eaf1c3286944818f90ff152b15"
+      sha256 "0b0e7f8f18f4dec8eec037c54c06baf236c0c935163fde07dace03b24d799d0e"
     end
     on_intel do
       url "https://github.com/missuo/tokens/releases/download/v#{version}/tokens-v#{version}-x86_64-apple-darwin.tar.gz"
-      sha256 "e399d0b61e74bcbef211acbc7865f61031d6df92c7ad8d78c670ad6ca8362881"
+      sha256 "c432998a3a3c92e2e8dc6d606c2d60e5174fce65b20f16a3557b91561403656d"
     end
   end
 
   on_linux do
     on_arm do
       url "https://github.com/missuo/tokens/releases/download/v#{version}/tokens-v#{version}-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "d6c7afb2ee34dbac3896ebe5be939ed6840ee2ee79adf68150798ff039c74ece"
+      sha256 "df946a53f34c496889db52d06324e600100dd3c679bfaecfff1c670048f6fff6"
     end
     on_intel do
       url "https://github.com/missuo/tokens/releases/download/v#{version}/tokens-v#{version}-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "81d217362ef9d0e948c785f00e3d7a389ed16c3453ec6b17bda286d619b0d65d"
+      sha256 "7b1811001c600e880e50b2b62c6f405f05897a69a0f62b525514e51ce4d7e08e"
     end
   end
 
