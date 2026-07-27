@@ -1,0 +1,7 @@
+# macOS
+.DS_Store
+
+# Release assets downloaded by getRelease.sh while computing checksums
+*.dmg
+*.zip
+*.tar.gz
