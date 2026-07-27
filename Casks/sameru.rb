@@ -12,12 +12,14 @@ cask "sameru" do
 
   app "Sameru.app"
 
-  # Fan control installs a setuid root helper on first use, which lives outside
-  # the app bundle and has to be removed explicitly.
-  uninstall quit:   "nz.owo.Sameru",
-            delete: "/Library/PrivilegedHelperTools/nz.owo.Sameru.fan-helper"
+  uninstall quit: "nz.owo.Sameru"
 
+  # Fan control installs a setuid root helper outside the app bundle. Removing it
+  # needs sudo, so it belongs in zap rather than uninstall: `brew upgrade` runs the
+  # uninstall stanza first, and a delete: here would demand a password on every
+  # single upgrade. The app reinstalls the helper by itself when it is missing.
   zap trash: [
+    "/Library/PrivilegedHelperTools/nz.owo.Sameru.fan-helper",
     "~/Library/Caches/nz.owo.Sameru",
     "~/Library/HTTPStorages/nz.owo.Sameru",
     "~/Library/Preferences/nz.owo.Sameru.plist",
