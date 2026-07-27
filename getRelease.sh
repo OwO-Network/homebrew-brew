@@ -258,6 +258,42 @@ update_koe(){
     echo -e "${GREEN}✓ Koe updated successfully${NC}"
 }
 
+update_sameru(){
+    echo "Checking Sameru..."
+
+    # Get the latest version from GitHub API
+    last_version=$(latest_release_version "missuo/Sameru")
+
+    # Get current version from cask
+    current_version=$(grep 'version "' Casks/sameru.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ Sameru is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating Sameru from v${current_version} to v${last_version}${NC}"
+
+    # Download first, so a failure leaves the cask untouched
+    if ! wget -q -O Sameru.dmg https://github.com/missuo/Sameru/releases/download/v${last_version}/Sameru-${last_version}.dmg; then
+        echo -e "${YELLOW}✗ Failed to download Sameru release asset${NC}"
+        rm -f Sameru.dmg
+        return 1
+    fi
+
+    # Calculate the SHA256 hash for the new disk image
+    sha256=$(sha256sum Sameru.dmg | cut -d ' ' -f 1)
+    rm -f Sameru.dmg
+
+    # Update version and hash in the cask
+    sed -i "s/version \".*\"/version \"${last_version}\"/" Casks/sameru.rb
+    sha_line=$(grep -n 'sha256 "' Casks/sameru.rb | head -n 1 | cut -d ':' -f 1)
+    sed -i "${sha_line}s/sha256 \".*\"/sha256 \"${sha256}\"/" Casks/sameru.rb
+
+    echo -e "${GREEN}✓ Sameru updated successfully${NC}"
+}
+
 update_fixtwitter(){
     echo "Checking FixTwitter..."
 
@@ -623,6 +659,8 @@ main(){
     update_polyglot-sub
     sleep 5
     update_koe
+    sleep 5
+    update_sameru
     sleep 5
     update_fixtwitter
     sleep 5
