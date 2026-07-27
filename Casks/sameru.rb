@@ -1,6 +1,6 @@
 cask "sameru" do
-  version "1.0.0"
-  sha256 "4a55dc68282cfaa15e44b9d409ad6ae7549b313b5d16f5bce965cd525163cb29"
+  version "1.0.1"
+  sha256 "d685bc76d4952d07c8bec3486790f25cdc6414e8d88d88c310cb5290eab37787"
 
   url "https://github.com/missuo/Sameru/releases/download/v#{version}/Sameru-#{version}.dmg"
   name "Sameru"
