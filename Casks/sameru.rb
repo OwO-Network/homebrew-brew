@@ -7,6 +7,9 @@ cask "sameru" do
   desc "Menu bar app for keep awake, clean mode, and fan control"
   homepage "https://github.com/missuo/Sameru"
 
+  # Sparkle updates the app in place, so brew should not treat a newer bundle
+  # version as drift.
+  auto_updates true
   depends_on arch: :arm64
   depends_on macos: :sonoma
 
