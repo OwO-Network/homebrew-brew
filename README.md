@@ -42,7 +42,7 @@ below.
 | [ai](https://github.com/missuo/ai-cli) | Launch Claude Code, Codex, or Grok in YOLO mode from one command | `brew install owo-network/brew/ai` |
 | [claude2openai](https://github.com/missuo/claude2openai) | A proxy to convert Claude API into OpenAI API format | `brew install owo-network/brew/claude2openai` |
 | [coffer](https://github.com/missuo/coffer) | A simple, fast, and secure key-value store | `brew install owo-network/brew/coffer` |
-| [deeplx](https://github.com/OwO-Network/DeepLX) | DeepLX is a permanently free DeepL API client written in Golang. | `brew install owo-network/brew/deeplx` |
+| [deeplx](https://github.com/OwO-Network/DLX) | DeepLX is a permanently free DeepL API client written in Golang. | `brew install owo-network/brew/deeplx` |
 | [fixtwitter](https://github.com/missuo/fixtwitter) | Background service that automatically replaces X.com links with fxtwitter.com in clipboard | `brew install owo-network/brew/fixtwitter` |
 | [fixtwitter-nosb](https://github.com/missuo/fixtwitter) | Background service that automatically replaces X.com links with no.sb in clipboard | `brew install owo-network/brew/fixtwitter-nosb` |
 | [mailclaw](https://github.com/missuo/mailclaw) | CLI for interacting with a MailClaw inbox API | `brew install owo-network/brew/mailclaw` |

@@ -72,7 +72,7 @@ update_deeplx(){
     echo "Checking DeepLX..."
 
     # Get the latest version from GitHub API
-    last_version=$(latest_release_version "OwO-Network/DeepLX")
+    last_version=$(latest_release_version "OwO-Network/DLX")
 
     # Get current version from formula
     current_version=$(grep 'version "' Formula/deeplx.rb | sed -E 's/.*version "([^"]+)".*/\1/')
@@ -88,9 +88,9 @@ update_deeplx(){
     # Update the version number in the formula
     sed -i "s/version \".*/version \"${last_version}\"/g" Formula/deeplx.rb
 
-    # Download the new binaries
-    wget -q -O deeplx_darwin_amd64 https://github.com/OwO-Network/DeepLX/releases/download/v${last_version}/deeplx_darwin_amd64
-    wget -q -O deeplx_darwin_arm64 https://github.com/OwO-Network/DeepLX/releases/download/v${last_version}/deeplx_darwin_arm64
+    # Download the new binaries (repo renamed to DLX; artifact names remain deeplx_*)
+    wget -q -O deeplx_darwin_amd64 https://github.com/OwO-Network/DLX/releases/download/v${last_version}/deeplx_darwin_amd64
+    wget -q -O deeplx_darwin_arm64 https://github.com/OwO-Network/DLX/releases/download/v${last_version}/deeplx_darwin_arm64
 
     # Calculate the SHA256 hash for the new binaries
     amd64_sha256=$(sha256sum deeplx_darwin_amd64 | cut -d ' ' -f 1)
