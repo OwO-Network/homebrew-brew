@@ -1,6 +1,6 @@
 cask "kasumi" do
-  version "0.2.8,40"
-  sha256 "09fa3cf0ad2ad107b39251baed6894c71d869902b4180e43acb001ea8156541b"
+  version "0.2.9,41"
+  sha256 "507b22792180263dead505ec0bc692995f6cc64799f4f2f5604d4254fa9ad768"
 
   url "https://kasumi.owo.nz/mac/Kasumi-#{version.csv.first}.dmg"
   name "Kasumi"
