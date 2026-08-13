@@ -1,6 +1,6 @@
 cask "opentype" do
-  version "0.2.0,2"
-  sha256 "285b5a6154ad443548d82f9131772afb922a69a4a1617558184bf863214b8c16"
+  version "0.2.1,3"
+  sha256 "9077cfbf285f42412d7da8d70bf889a7f19d524333fabd706211f6973e616589"
 
   url "https://opentype.owo.nz/mac/OpenType-#{version.csv.first}.dmg"
   name "OpenType"
