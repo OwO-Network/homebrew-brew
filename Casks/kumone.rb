@@ -9,7 +9,7 @@ cask "kumone" do
 
   livecheck do
     url "https://github.com/missuo/kumone/releases/latest/download/appcast.xml"
-    strategy :sparkle
+    strategy :sparkle, &:short_version
   end
 
   # Sparkle updates the app in place, so brew should not treat a newer bundle
