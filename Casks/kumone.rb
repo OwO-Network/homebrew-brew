@@ -1,6 +1,6 @@
 cask "kumone" do
-  version "0.1.8"
-  sha256 "29ed1509ba941c2447b2c337fc8f03c74ed79d9c4246e105b265952e79dbf940"
+  version "0.1.9"
+  sha256 "ea5e3fdc91fe15587701d52ca2690bfea072ea7e0a4a164b3838253dd3089e72"
 
   url "https://github.com/missuo/kumone/releases/download/v#{version}/Kumone-#{version}.zip"
   name "Kumone"
