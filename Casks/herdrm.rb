@@ -1,6 +1,6 @@
 cask "herdrm" do
-  version "0.2.0"
-  sha256 "27561b5eb88e67a5fb8f6d392e7e6e711cfb55703cc08062ae95febf70c8191d"
+  version "0.2.1"
+  sha256 "2c495dff5a676343be0a3cf511bafe2554652e9c0c3a5dac0552434d613cdcf3"
 
   url "https://github.com/missuo/herdrm/releases/download/v#{version}/herdrm-#{version}.zip"
   name "herdrm"
