@@ -1,6 +1,6 @@
 cask "kumone" do
-  version "0.1.9"
-  sha256 "ea5e3fdc91fe15587701d52ca2690bfea072ea7e0a4a164b3838253dd3089e72"
+  version "0.2.0"
+  sha256 "15ecc7d0403121d8584d2559105b06878863aabad29fcd00ae38033ba9be75b2"
 
   url "https://github.com/missuo/kumone/releases/download/v#{version}/Kumone-#{version}.zip"
   name "Kumone"
@@ -16,7 +16,6 @@ cask "kumone" do
   # version as drift.
   auto_updates true
   depends_on macos: :sequoia
-  depends_on arch: :arm64
 
   app "Kumone.app"
 
