@@ -1,8 +1,8 @@
 cask "kumone" do
-  version "0.3.0"
-  sha256 "addad1a7c816b0866bdd1449b32fa5ed6ebb4ae3ae3238d0dcd32cd1d4c8d506"
+  version "0.3.8"
+  sha256 "564c4ce3a18d4cfaceafa8d2f3b3dc92a2639e06809aa8e44841790e4f9b92fd"
 
-  url "https://github.com/missuo/kumone/releases/download/v#{version}/Kumone-#{version}.zip"
+  url "https://github.com/missuo/kumone/releases/download/v0.3.8/Kumone-0.3.8.zip"
   name "Kumone"
   desc "Native client for NetEase Cloud Music"
   homepage "https://github.com/missuo/kumone"
