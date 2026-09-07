@@ -172,9 +172,11 @@ update_imgzip(){
     amd64_sha256=$(sha256sum imgzip_darwin_amd64 | cut -d ' ' -f 1)
     arm64_sha256=$(sha256sum imgzip_darwin_arm64 | cut -d ' ' -f 1)
 
-    # Update the SHA256 hashes in the cask
-    sed -i "5s/.*/    sha256 \"${arm64_sha256}\"/" Casks/imgzip.rb
-    sed -i "9s/.*/    sha256 \"${amd64_sha256}\"/" Casks/imgzip.rb
+    # Update the SHA256 hashes in the cask (locate by content, not line number)
+    arm_line=$(grep -n 'sha256 arm:' Casks/imgzip.rb | cut -d ':' -f 1)
+    intel_line=$(grep -n '^[[:space:]]*intel: "' Casks/imgzip.rb | cut -d ':' -f 1)
+    sed -i "${arm_line}s/sha256 arm:.*/sha256 arm:   \"${arm64_sha256}\",/" Casks/imgzip.rb
+    sed -i "${intel_line}s/intel: \".*\"/intel: \"${amd64_sha256}\"/" Casks/imgzip.rb
 
     # Delete the new binaries
     rm -f imgzip_darwin*

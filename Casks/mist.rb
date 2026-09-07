@@ -26,8 +26,8 @@ cask "mist" do
   uninstall quit: "nz.owo.Mist"
 
   zap trash: [
+    "/tmp/mist-service.log",
     "~/Library/Group Containers/group.nz.owo.Mist",
     "~/Library/Preferences/nz.owo.Mist.plist",
-    "/tmp/mist-service.log",
   ]
 end

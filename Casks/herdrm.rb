@@ -4,7 +4,7 @@ cask "herdrm" do
 
   url "https://github.com/missuo/herdrm/releases/download/v#{version}/herdrm-#{version}.zip"
   name "herdrm"
-  desc "Native macOS console for herdr"
+  desc "Native console for herdr"
   homepage "https://github.com/missuo/herdrm"
 
   livecheck do
