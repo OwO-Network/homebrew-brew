@@ -12,17 +12,17 @@ cask "polyglot-sub" do
 
   app "Polyglot Sub.app"
 
-  postflight do
-    system_command "/usr/bin/xattr",
-                   args: ["-cr", "#{staged_path}/Polyglot Sub.app"],
-                   sudo: true
+  postflight_steps do
+    run "/usr/bin/xattr",
+        args: ["-cr", "{{staged_path}}/Polyglot Sub.app"],
+        sudo: true
 
-    system_command "/usr/bin/find",
-                   args: ["#{staged_path}/Polyglot Sub.app", "-name", ".DS_Store", "-delete"],
-                   sudo: true
-    
-    system_command "/usr/bin/codesign",
-                   args: ["--force", "--deep", "--sign", "-", "#{staged_path}/Polyglot Sub.app"],
-                   sudo: true
+    run "/usr/bin/find",
+        args: ["{{staged_path}}/Polyglot Sub.app", "-name", ".DS_Store", "-delete"],
+        sudo: true
+
+    run "/usr/bin/codesign",
+        args: ["--force", "--deep", "--sign", "-", "{{staged_path}}/Polyglot Sub.app"],
+        sudo: true
   end
 end

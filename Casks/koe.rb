@@ -4,7 +4,7 @@ cask "koe" do
 
   url "https://github.com/missuo/koe/releases/download/v#{version}/Koe-macOS-arm64.zip"
   name "Koe"
-  desc "A zero-GUI macOS voice input tool"
+  desc "Zero-GUI voice input tool"
   homepage "https://github.com/missuo/koe"
 
   auto_updates true
@@ -13,15 +13,6 @@ cask "koe" do
 
   app "Koe.app"
   binary "#{appdir}/Koe.app/Contents/MacOS/koe-cli", target: "koe"
-
-  uninstall_preflight do
-    koe_dir = File.expand_path("~/.koe")
-    koe_backup = File.expand_path("~/.koe.upgrade_backup")
-    next unless File.directory?(koe_dir)
-
-    system_command "/bin/cp",
-                   args: ["-r", koe_dir, koe_backup]
-  end
 
   postflight do
     koe_dir = File.expand_path("~/.koe")
@@ -35,6 +26,15 @@ cask "koe" do
       system_command "/bin/rm",
                      args: ["-rf", koe_backup]
     end
+  end
+
+  uninstall_preflight do
+    koe_dir = File.expand_path("~/.koe")
+    koe_backup = File.expand_path("~/.koe.upgrade_backup")
+    next unless File.directory?(koe_dir)
+
+    system_command "/bin/cp",
+                   args: ["-r", koe_dir, koe_backup]
   end
 
   zap trash: "~/.koe"
