@@ -582,13 +582,19 @@ update_tokens(){
     # Update the version number in the formula
     sed -i "s/version \".*\"/version \"${last_version}\"/" Formula/tokens.rb
 
-    # The release publishes a `<archive>.sha256` sidecar for every target, so
-    # fetch each one and rewrite the sha256 line that immediately follows the
-    # matching url line (robust to line shifts as the formula evolves).
+    # Releases ship bare tarballs with no `.sha256` sidecar (none ever has),
+    # so download each archive and hash it, then rewrite the sha256 line that
+    # immediately follows the matching url line (robust to line shifts).
     base="https://github.com/missuo/tokens/releases/download/v${last_version}"
     for target in aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu; do
-        sha256=$(curl --fail --silent --show-error --location \
-            "${base}/tokens-v${last_version}-${target}.sha256" | cut -d ' ' -f 1)
+        asset="tokens-v${last_version}-${target}.tar.gz"
+        if ! wget -q -O "${asset}" "${base}/${asset}"; then
+            echo -e "${YELLOW}✗ Failed to download ${asset}${NC}"
+            rm -f "${asset}"
+            return 1
+        fi
+        sha256=$(sha256sum "${asset}" | cut -d ' ' -f 1)
+        rm -f "${asset}"
         url_line=$(grep -n "${target}.tar.gz" Formula/tokens.rb | head -1 | cut -d ':' -f 1)
         if [[ "$sha256" =~ ^[0-9a-f]{64}$ ]] && [ -n "$url_line" ]; then
             sed -i "$((url_line + 1))s|.*|      sha256 \"${sha256}\"|" Formula/tokens.rb
