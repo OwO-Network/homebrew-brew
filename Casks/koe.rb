@@ -14,27 +14,21 @@ cask "koe" do
   app "Koe.app"
   binary "#{appdir}/Koe.app/Contents/MacOS/koe-cli", target: "koe"
 
-  postflight do
-    koe_dir = File.expand_path("~/.koe")
-    koe_backup = File.expand_path("~/.koe.upgrade_backup")
-    next unless File.directory?(koe_backup)
+  postflight_steps do
+    # Restore user data backup created during upgrade uninstallation.
+    run "/bin/mv",
+        args:         ["-n", "{{home}}/.koe.upgrade_backup", "{{home}}/.koe"],
+        must_succeed: false
 
-    unless File.directory?(koe_dir)
-      system_command "/bin/mv",
-                     args: [koe_backup, koe_dir]
-    else
-      system_command "/bin/rm",
-                     args: ["-rf", koe_backup]
-    end
+    run "/bin/rm",
+        args:         ["-rf", "{{home}}/.koe.upgrade_backup"],
+        must_succeed: false
   end
 
-  uninstall_preflight do
-    koe_dir = File.expand_path("~/.koe")
-    koe_backup = File.expand_path("~/.koe.upgrade_backup")
-    next unless File.directory?(koe_dir)
-
-    system_command "/bin/cp",
-                   args: ["-r", koe_dir, koe_backup]
+  uninstall_preflight_steps do
+    run "/bin/cp",
+        args:         ["-r", "{{home}}/.koe", "{{home}}/.koe.upgrade_backup"],
+        must_succeed: false
   end
 
   zap trash: "~/.koe"
