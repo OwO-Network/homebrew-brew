@@ -32,6 +32,7 @@ below.
 | [imgzip](https://github.com/missuo/imgzip) | A simple and efficient image compression tool | `brew install --cask owo-network/brew/imgzip` |
 | [koe](https://github.com/missuo/koe) | A zero-GUI macOS voice input tool | `brew install --cask owo-network/brew/koe` |
 | [mist](https://github.com/missuo/Mist) | Lightweight S3 image uploader for macOS | `brew install --cask owo-network/brew/mist` |
+| [motrix](https://github.com/missuo/motrix-mygo) | Download manager with a native Go interface over aria2 | `brew install --cask owo-network/brew/motrix` |
 | [polyglot-sub](https://github.com/missuo/PolyglotSub) | Subtitle translator based on DeepLX | `brew install --cask owo-network/brew/polyglot-sub` |
 | [sameru](https://github.com/missuo/Sameru) | Menu bar app for keep awake, clean mode, and fan control | `brew install --cask owo-network/brew/sameru` |
 

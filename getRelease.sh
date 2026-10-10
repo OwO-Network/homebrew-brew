@@ -184,6 +184,49 @@ update_imgzip(){
     echo -e "${GREEN}✓ ImgZip updated successfully${NC}"
 }
 
+update_motrix(){
+    echo "Checking Motrix..."
+
+    # Get the latest version from GitHub API
+    last_version=$(latest_release_version "missuo/motrix-mygo")
+
+    # Get current version from cask
+    current_version=$(grep 'version "' Casks/motrix.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ Motrix is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating Motrix from v${current_version} to v${last_version}${NC}"
+
+    # Download the new disk images before touching the cask
+    base_url="https://github.com/missuo/motrix-mygo/releases/download/v${last_version}"
+    if ! wget -q -O motrix_mygo_arm64.dmg "${base_url}/Motrix-${last_version}-macos-arm64.dmg" ||
+       ! wget -q -O motrix_mygo_x64.dmg "${base_url}/Motrix-${last_version}-macos-x64.dmg"; then
+        echo -e "${YELLOW}✗ Failed to download Motrix release assets${NC}"
+        rm -f motrix_mygo_*.dmg
+        return 0
+    fi
+
+    # Calculate the SHA256 hash for the new disk images
+    arm64_sha256=$(sha256sum motrix_mygo_arm64.dmg | cut -d ' ' -f 1)
+    x64_sha256=$(sha256sum motrix_mygo_x64.dmg | cut -d ' ' -f 1)
+
+    # Update the version and the SHA256 hashes in the cask (locate by content)
+    sed -i "s/version \".*\"/version \"${last_version}\"/" Casks/motrix.rb
+    arm_line=$(grep -n 'sha256 arm:' Casks/motrix.rb | cut -d ':' -f 1)
+    intel_line=$(grep -n '^[[:space:]]*intel: "' Casks/motrix.rb | cut -d ':' -f 1)
+    sed -i "${arm_line}s/sha256 arm:.*/sha256 arm:   \"${arm64_sha256}\",/" Casks/motrix.rb
+    sed -i "${intel_line}s/intel: \".*\"/intel: \"${x64_sha256}\"/" Casks/motrix.rb
+
+    # Delete the new disk images
+    rm -f motrix_mygo_*.dmg
+
+    echo -e "${GREEN}✓ Motrix updated successfully${NC}"
+}
+
 update_polyglot-sub(){
     echo "Checking Polyglot Sub..."
 
@@ -663,6 +706,8 @@ main(){
     update_claude2openai
     sleep 5
     update_imgzip
+    sleep 5
+    update_motrix
     sleep 5
     update_polyglot-sub
     sleep 5
