@@ -1,5 +1,5 @@
 cask "motrix" do
-  arch arm: "arm64", intel: "aef119372e9c07afac1b2f8ef15c611f066f1051326bc2fb5450c0eb4b14636f"
+  arch arm: "arm64", intel: "x64"
 
   version "0.0.4"
   sha256 arm:   "87cf0b6512cbc685fc700f159bd01ae8d2b2928fdc203b85c9a2754f39e2dea0",
