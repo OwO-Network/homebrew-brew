@@ -1,9 +1,9 @@
 cask "motrix" do
   arch arm: "arm64", intel: "x64"
 
-  version "0.0.7"
-  sha256 arm:   "e83c216f437ffddf89d06152f7791bfc3c2c38f89b1052432d395f2724a3af04",
-         intel: "075750818e0e916909e686795e9ca4f9b8d5c6cd65f5e0e6cc4086acc773c222"
+  version "0.0.8"
+  sha256 arm:   "0f306e2640b76408c2b3c66bda27fbebac74156ca904e3c63cddfa70148bec50",
+         intel: "32e91c9c284256a2bb6b2347ea04a51860f78c69a1612834a804f0d7c6e8a11d"
 
   url "https://github.com/missuo/motrix-mygo/releases/download/v#{version}/Motrix-#{version}-macos-#{arch}.dmg"
   name "Motrix"
@@ -15,6 +15,8 @@ cask "motrix" do
     strategy :github_latest
   end
 
+  # The app updates itself from the releases.
+  auto_updates true
   # Homebrew's own motrix casks install a Motrix.app too.
   conflicts_with cask: [
     "homebrew/cask/motrix",
