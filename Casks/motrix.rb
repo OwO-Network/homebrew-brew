@@ -1,9 +1,9 @@
 cask "motrix" do
   arch arm: "arm64", intel: "x64"
 
-  version "0.0.6"
-  sha256 arm:   "2fc2ab5a94a08e45833257d99b04303ee25f007c16b426639c6735f251aa279c",
-         intel: "5de37341555468c627fc942257c092b160d485bcc687c6fe1b0f1a10f7aa980a"
+  version "0.0.7"
+  sha256 arm:   "e83c216f437ffddf89d06152f7791bfc3c2c38f89b1052432d395f2724a3af04",
+         intel: "075750818e0e916909e686795e9ca4f9b8d5c6cd65f5e0e6cc4086acc773c222"
 
   url "https://github.com/missuo/motrix-mygo/releases/download/v#{version}/Motrix-#{version}-macos-#{arch}.dmg"
   name "Motrix"
