@@ -25,5 +25,6 @@ cask "kumone" do
     "~/Library/HTTPStorages/im.missuo.Kumone",
     "~/Library/Preferences/im.missuo.Kumone.plist",
     "~/Library/Saved Application State/im.missuo.Kumone.savedState",
+    "~/Library/WebKit/im.missuo.Kumone",
   ]
 end
