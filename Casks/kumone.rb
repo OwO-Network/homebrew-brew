@@ -19,6 +19,8 @@ cask "kumone" do
 
   app "Kumone.app"
 
+  uninstall quit: "im.missuo.Kumone"
+
   zap trash: [
     "~/Library/Application Support/Kumone",
     "~/Library/Caches/im.missuo.Kumone",
