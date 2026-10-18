@@ -339,6 +339,46 @@ update_sameru(){
     echo -e "${GREEN}✓ Sameru updated successfully${NC}"
 }
 
+update_tamio(){
+    echo "Checking Tamio..."
+
+    # Get the latest version from GitHub API. Until missuo/tamio is public the
+    # API answers 404; that skips Tamio instead of failing the whole run.
+    if ! last_version=$(latest_release_version "missuo/tamio"); then
+        echo -e "${YELLOW}✗ No public Tamio release to check; skipped${NC}"
+        return 0
+    fi
+
+    # Get current version from cask
+    current_version=$(grep 'version "' Casks/tamio.rb | sed -E 's/.*version "([^"]+)".*/\1/')
+
+    # Compare versions
+    if [ "$current_version" = "$last_version" ]; then
+        echo -e "${GREEN}✓ Tamio is already up to date (v${current_version})${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}→ Updating Tamio from v${current_version} to v${last_version}${NC}"
+
+    # Download first, so a failure leaves the cask untouched
+    if ! wget -q -O Tamio.dmg https://github.com/missuo/tamio/releases/download/v${last_version}/Tamio-${last_version}.dmg; then
+        echo -e "${YELLOW}✗ Failed to download Tamio release asset${NC}"
+        rm -f Tamio.dmg
+        return 1
+    fi
+
+    # Calculate the SHA256 hash for the new disk image
+    sha256=$(sha256sum Tamio.dmg | cut -d ' ' -f 1)
+    rm -f Tamio.dmg
+
+    # Update version and hash in the cask
+    sed -i "s/version \".*\"/version \"${last_version}\"/" Casks/tamio.rb
+    sha_line=$(grep -n 'sha256 "' Casks/tamio.rb | head -n 1 | cut -d ':' -f 1)
+    sed -i "${sha_line}s/sha256 \".*\"/sha256 \"${sha256}\"/" Casks/tamio.rb
+
+    echo -e "${GREEN}✓ Tamio updated successfully${NC}"
+}
+
 update_fixtwitter(){
     echo "Checking FixTwitter..."
 
@@ -714,6 +754,8 @@ main(){
     update_koe
     sleep 5
     update_sameru
+    sleep 5
+    update_tamio
     sleep 5
     update_fixtwitter
     sleep 5
