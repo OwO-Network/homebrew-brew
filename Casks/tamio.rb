@@ -1,6 +1,6 @@
 cask "tamio" do
-  version "0.1.2"
-  sha256 "4464e65d2905dfb5e669f76c88ed4a7c41258e2d58b18676939de7232822764b"
+  version "0.1.4"
+  sha256 "b1e51addf52f134d608abed3e04244fcf8c0f4063258280fa30cf7310169fff0"
 
   url "https://github.com/missuo/tamio/releases/download/v#{version}/Tamio-#{version}.dmg"
   name "Tamio"
