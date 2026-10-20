@@ -17,10 +17,9 @@ cask "mist" do
 
   app "Mist.app"
 
-  postflight do
-    # Remove the legacy Automator service replaced by the Finder extension.
-    require "fileutils"
-    FileUtils.rm_rf(File.expand_path("~/Library/Services/Upload to Mist.workflow"))
+  # Remove the legacy Automator service replaced by the Finder extension.
+  postflight_steps do
+    remove "~/Library/Services/Upload to Mist.workflow", recursive: true
   end
 
   uninstall quit: "nz.owo.Mist"

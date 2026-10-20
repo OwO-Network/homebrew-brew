@@ -14,27 +14,21 @@ cask "koe" do
   app "Koe.app"
   binary "#{appdir}/Koe.app/Contents/MacOS/koe-cli", target: "koe"
 
-  postflight do
-    koe_dir = File.expand_path("~/.koe")
-    koe_backup = File.expand_path("~/.koe.upgrade_backup")
-    next unless File.directory?(koe_backup)
-
-    unless File.directory?(koe_dir)
-      system_command "/bin/mv",
-                     args: [koe_backup, koe_dir]
-    else
-      system_command "/bin/rm",
-                     args: ["-rf", koe_backup]
+  postflight_steps do
+    if_path_exists "~/.koe.upgrade_backup" do
+      if_path_exists "~/.koe" do
+        remove "~/.koe.upgrade_backup", recursive: true
+      end
+      unless_path_exists "~/.koe" do
+        move "~/.koe.upgrade_backup", "~/.koe"
+      end
     end
   end
 
-  uninstall_preflight do
-    koe_dir = File.expand_path("~/.koe")
-    koe_backup = File.expand_path("~/.koe.upgrade_backup")
-    next unless File.directory?(koe_dir)
-
-    system_command "/bin/cp",
-                   args: ["-r", koe_dir, koe_backup]
+  uninstall_preflight_steps do
+    if_path_exists "~/.koe" do
+      copy "~/.koe", "~/.koe.upgrade_backup", recursive: true
+    end
   end
 
   zap trash: "~/.koe"
