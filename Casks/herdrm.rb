@@ -19,11 +19,16 @@ cask "herdrm" do
 
   app "herdrm.app"
 
+  # sb.moe.herdrm since 0.7.0; dev.bybee.herdrm before.
   zap trash: [
     "~/Library/Application Support/HerdrM",
     "~/Library/Caches/dev.bybee.herdrm",
+    "~/Library/Caches/sb.moe.herdrm",
     "~/Library/HTTPStorages/dev.bybee.herdrm",
+    "~/Library/HTTPStorages/sb.moe.herdrm",
     "~/Library/Preferences/dev.bybee.herdrm.plist",
+    "~/Library/Preferences/sb.moe.herdrm.plist",
     "~/Library/Saved Application State/dev.bybee.herdrm.savedState",
+    "~/Library/Saved Application State/sb.moe.herdrm.savedState",
   ]
 end
