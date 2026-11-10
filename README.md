@@ -41,6 +41,7 @@ below.
 | [polyglot-sub](https://github.com/missuo/PolyglotSub) | Subtitle translator based on DeepLX | `brew install --cask owo-network/brew/polyglot-sub` |
 | [sameru](https://github.com/missuo/Sameru) | Menu bar app for keep awake, clean mode, and fan control | `brew install --cask owo-network/brew/sameru` |
 | [tamio](https://tamio.sh) | SSH client with live server status, SFTP and an MCP server for AI agents | `brew install --cask owo-network/brew/tamio` |
+| [xdl](https://github.com/missuo/xdl) | Batch downloader for X/Twitter media with a menu bar app, CLI and MCP server | `brew install --cask owo-network/brew/xdl` |
 
 ### Formulae
 
@@ -57,6 +58,7 @@ below.
 | [speedtest-rust](https://github.com/missuo/speedtest-rust) | Speedtest CLI powered by Apple CDN, written in Rust | `brew install owo-network/brew/speedtest-rust` |
 | [tokens](https://tokens.ci) | Track and compete on AI coding-assistant token usage | `brew install owo-network/brew/tokens` |
 | [us-visa](https://github.com/missuo/USVisaWaitTimes) | A tool for checking US visa wait times | `brew install owo-network/brew/us-visa` |
+| [xdl-cli](https://github.com/missuo/xdl) | The XDL CLI alone, with `xdl serve` as a background service (macOS and Linux) | `brew install owo-network/brew/xdl-cli` |
 | [xpost](https://github.com/missuo/xpost) | A command-line tool and HTTP API for posting to X (Twitter) | `brew install owo-network/brew/xpost` |
 
 ## Uninstall
