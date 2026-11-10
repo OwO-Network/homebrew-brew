@@ -735,76 +735,6 @@ update_ai(){
     echo -e "${GREEN}✓ ai updated successfully${NC}"
 }
 
-update_xdl(){
-    echo "Checking XDL..."
-
-    if ! last_version=$(latest_release_version "missuo/xdl"); then
-        echo -e "${YELLOW}✗ No XDL release to check; skipped${NC}"
-        return 0
-    fi
-    current_version=$(grep 'version "' Casks/xdl.rb | sed -E 's/.*version "([^"]+)".*/\1/')
-    if [ "$current_version" = "$last_version" ]; then
-        echo -e "${GREEN}✓ XDL is already up to date (v${current_version})${NC}"
-        return 0
-    fi
-    echo -e "${YELLOW}→ Updating XDL from v${current_version} to v${last_version}${NC}"
-
-    # Download first, so a failure leaves the cask untouched
-    asset="XDL-${last_version}-macos-universal.dmg"
-    if ! wget -q -O "${asset}" "https://github.com/missuo/xdl/releases/download/v${last_version}/${asset}"; then
-        echo -e "${YELLOW}✗ Failed to download ${asset}${NC}"
-        rm -f "${asset}"
-        return 1
-    fi
-    sha256=$(sha256sum "${asset}" | cut -d ' ' -f 1)
-    rm -f "${asset}"
-
-    sed -i "s/version \".*\"/version \"${last_version}\"/" Casks/xdl.rb
-    sha_line=$(grep -n 'sha256 "' Casks/xdl.rb | head -n 1 | cut -d ':' -f 1)
-    sed -i "${sha_line}s/sha256 \".*\"/sha256 \"${sha256}\"/" Casks/xdl.rb
-
-    echo -e "${GREEN}✓ XDL updated successfully${NC}"
-}
-
-update_xdl-cli(){
-    echo "Checking xdl-cli..."
-
-    if ! last_version=$(latest_release_version "missuo/xdl"); then
-        echo -e "${YELLOW}✗ No XDL release to check; skipped${NC}"
-        return 0
-    fi
-    current_version=$(grep 'version "' Formula/xdl-cli.rb | sed -E 's/.*version "([^"]+)".*/\1/')
-    if [ "$current_version" = "$last_version" ]; then
-        echo -e "${GREEN}✓ xdl-cli is already up to date (v${current_version})${NC}"
-        return 0
-    fi
-    echo -e "${YELLOW}→ Updating xdl-cli from v${current_version} to v${last_version}${NC}"
-
-    # Every target's sha256 comes from the release's checksums, checked
-    # before the formula changes.
-    sums=$(wget -q -O - "https://github.com/missuo/xdl/releases/download/v${last_version}/SHA256SUMS.txt") || {
-        echo -e "${YELLOW}✗ Failed to download SHA256SUMS.txt${NC}"
-        return 1
-    }
-    xdl_cli_sha(){
-        echo "${sums}" | awk -v f="xdl-cli-${last_version}-$1.tar.gz" '$2 == f {print $1}'
-    }
-    for target in darwin-arm64 darwin-amd64 linux-arm64 linux-amd64; do
-        if [[ ! "$(xdl_cli_sha "${target}")" =~ ^[0-9a-f]{64}$ ]]; then
-            echo -e "${YELLOW}✗ No checksum for xdl-cli ${target}${NC}"
-            return 1
-        fi
-    done
-
-    sed -i "s/version \".*\"/version \"${last_version}\"/" Formula/xdl-cli.rb
-    for target in darwin-arm64 darwin-amd64 linux-arm64 linux-amd64; do
-        url_line=$(grep -n "${target}.tar.gz" Formula/xdl-cli.rb | head -1 | cut -d ':' -f 1)
-        sed -i "$((url_line + 1))s|.*|      sha256 \"$(xdl_cli_sha "${target}")\"|" Formula/xdl-cli.rb
-    done
-
-    echo -e "${GREEN}✓ xdl-cli updated successfully${NC}"
-}
-
 main(){
     echo "======================================"
     echo "  Homebrew Formula Update Script"
@@ -844,10 +774,6 @@ main(){
     update_tokens
     sleep 5
     update_ai
-    sleep 5
-    update_xdl
-    sleep 5
-    update_xdl-cli
 
     validate_formulae
 
