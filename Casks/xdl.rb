@@ -1,6 +1,6 @@
 cask "xdl" do
-  version "2.3.0"
-  sha256 "5879ef95808e5d920e4a9930fc912d1b5073c77ecd10c82d38a24510a0d552eb"
+  version "2.3.1"
+  sha256 "265a13e9130f02b9b76f3e95fdd16e6833cd71e62558893ed5e3be8756dd435a"
 
   url "https://github.com/missuo/xdl/releases/download/v#{version}/XDL-#{version}-macos-universal.dmg"
   name "XDL"
