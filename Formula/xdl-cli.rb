@@ -1,28 +1,28 @@
 class XdlCli < Formula
   desc "Batch downloader for X/Twitter media: CLI, headless server and MCP"
   homepage "https://github.com/missuo/xdl"
-  version "2.1.0"
+  version "2.2.0"
   license "GPL-3.0-only"
 
   on_macos do
     on_arm do
       url "https://github.com/missuo/xdl/releases/download/v#{version}/xdl-cli-#{version}-darwin-arm64.tar.gz"
-      sha256 "10b4e9f99a58631df5e42bc4c5d3f61ced8a9da739db1d2604ff1909e34410f6"
+      sha256 "764de5c6ab4f5b11ac8caf12957b2aca0278c1d681442ef911af1593849993a4"
     end
     on_intel do
       url "https://github.com/missuo/xdl/releases/download/v#{version}/xdl-cli-#{version}-darwin-amd64.tar.gz"
-      sha256 "e4df9225fe37794e5ccd0249f432c7bb8ef1013c1e7687f92a7dc6d85b97d8a9"
+      sha256 "255d78949d28388b07349df4da99705c6ba7621bf620d4e473111ee7cc76a9db"
     end
   end
 
   on_linux do
     on_arm do
       url "https://github.com/missuo/xdl/releases/download/v#{version}/xdl-cli-#{version}-linux-arm64.tar.gz"
-      sha256 "40798edc2fcfef24d77cd13ec88c4dbb87dfa82f1ea33a622735f0b5d56addae"
+      sha256 "c2f544e2d92fd99f19abb1ab333f81f1ac0f32c5afdb605e72d414a548a969d0"
     end
     on_intel do
       url "https://github.com/missuo/xdl/releases/download/v#{version}/xdl-cli-#{version}-linux-amd64.tar.gz"
-      sha256 "09221923e7fb68b70d0b80d37a03ccfa1f5c0f01b652ec1dcfddb51f3fe77230"
+      sha256 "21bee9fb372b83f4cf1ebf4241415e1eba0a8d2e0b60f4a0a299ca7136e0cca4"
     end
   end
 
