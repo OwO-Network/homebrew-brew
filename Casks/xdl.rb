@@ -1,6 +1,6 @@
 cask "xdl" do
-  version "2.2.0"
-  sha256 "74d1c8b90b56b414e9d8a8838314a57b4003d899ce823c810ee12cdb17356d2c"
+  version "2.3.0"
+  sha256 "5879ef95808e5d920e4a9930fc912d1b5073c77ecd10c82d38a24510a0d552eb"
 
   url "https://github.com/missuo/xdl/releases/download/v#{version}/XDL-#{version}-macos-universal.dmg"
   name "XDL"
@@ -22,9 +22,9 @@ cask "xdl" do
 
   uninstall quit: "me.missuo.XDL"
 
-  # The library, download history, subscriptions and xtractor live in
-  # ~/.twitterxmediabatchdownloader, shared with the app XDL derives from,
-  # and the X auth token in the login keychain: zap leaves both alone.
+  # The library, the settings and the download history live in
+  # ~/Library/Application Support/XDL, the X auth token in the login
+  # keychain (entry "XDL"): zap removes the folder, not the token.
   zap trash: [
     "~/Library/Application Support/XDL",
     "~/Library/Preferences/me.missuo.XDL.plist",
