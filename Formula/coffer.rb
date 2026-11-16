@@ -1,22 +1,22 @@
 class Coffer < Formula
   desc "End-to-end encrypted credentials for you and your AI agents"
   homepage "https://github.com/missuo/coffer-releases"
-  version "0.2.1"
+  version "0.2.2"
   license "MIT"
 
   on_macos do
-    url "https://github.com/missuo/coffer-releases/releases/download/v0.2.1/coffer-0.2.1-macos-universal.tar.gz"
-    sha256 "61fc1818007dc0578ef3560f495b3b8a04b54f81e4becc72811cb8d0aef714f1"
+    url "https://github.com/missuo/coffer-releases/releases/download/v0.2.2/coffer-0.2.2-macos-universal.tar.gz"
+    sha256 "e30d1a783399297fe4e4c52da4b707f88f7e86093f089ee5d4c31fb09566a964"
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/missuo/coffer-releases/releases/download/v0.2.1/coffer-0.2.1-linux-x86_64.tar.gz"
-      sha256 "46b170abcb29771ab1e18c713ae4bfd89e41ae876d5ee3a64458e7d8d4d07bac"
+      url "https://github.com/missuo/coffer-releases/releases/download/v0.2.2/coffer-0.2.2-linux-x86_64.tar.gz"
+      sha256 "b1cacb8d3956bc7b3303e3994c4871c036915ab2ae31aacb3e847fc752c29301"
     end
     on_arm do
-      url "https://github.com/missuo/coffer-releases/releases/download/v0.2.1/coffer-0.2.1-linux-aarch64.tar.gz"
-      sha256 "a94d95c8682b1d4255b8f416fa0579caf406c5a998e60fb4e2ec254a3b82e0ea"
+      url "https://github.com/missuo/coffer-releases/releases/download/v0.2.2/coffer-0.2.2-linux-aarch64.tar.gz"
+      sha256 "efa86c824bf92fe1ec6c45585889ec8c30ef414003e20752015638cc2fad3b42"
     end
   end
 
