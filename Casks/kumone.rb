@@ -19,11 +19,14 @@ cask "kumone" do
 
   app "Kumone.app"
 
+  uninstall quit: "im.missuo.Kumone"
+
   zap trash: [
     "~/Library/Application Support/Kumone",
     "~/Library/Caches/im.missuo.Kumone",
     "~/Library/HTTPStorages/im.missuo.Kumone",
     "~/Library/Preferences/im.missuo.Kumone.plist",
     "~/Library/Saved Application State/im.missuo.Kumone.savedState",
+    "~/Library/WebKit/im.missuo.Kumone",
   ]
 end
