@@ -15,6 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Run Shell
+        id: update
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
@@ -22,3 +23,10 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: update release version
+      # Commit first so one broken upstream does not throw away the formulae
+      # that did update, then make the failure visible.
+      - name: Report failed updates
+        if: steps.update.outputs.failed != ''
+        run: |
+          echo "::error::Could not update: ${{ steps.update.outputs.failed }}"
+          exit 1

@@ -572,13 +572,11 @@ update_speedtest-rust(){
 update_coffer(){
     echo "Checking coffer..."
 
-    # Get the latest version from GitHub API
-    last_version=$(latest_release_version "missuo/coffer")
-
-    # Get current version from formula
+    # Builds are published from the public coffer-releases repo; missuo/coffer
+    # is private and its own releases stopped at v0.0.1.
+    last_version=$(latest_release_version "missuo/coffer-releases")
     current_version=$(grep 'version "' Formula/coffer.rb | sed -E 's/.*version "([^"]+)".*/\1/')
 
-    # Compare versions
     if [ "$current_version" = "$last_version" ]; then
         echo -e "${GREEN}✓ coffer is already up to date (v${current_version})${NC}"
         return 0
@@ -586,23 +584,23 @@ update_coffer(){
 
     echo -e "${YELLOW}→ Updating coffer from v${current_version} to v${last_version}${NC}"
 
-    # Update version in the formula
+    # The urls spell the version out instead of using #{version}, so rewrite them too.
     sed -i "s/version \".*\"/version \"${last_version}\"/" Formula/coffer.rb
+    sed -i "s|/v${current_version}/coffer-${current_version}-|/v${last_version}/coffer-${last_version}-|" Formula/coffer.rb
 
-    # Download the new binaries
-    wget -q -O coffer_darwin_arm64 https://github.com/missuo/coffer/releases/download/v${last_version}/coffer-aarch64-apple-darwin
-    wget -q -O coffer_darwin_amd64 https://github.com/missuo/coffer/releases/download/v${last_version}/coffer-x86_64-apple-darwin
-
-    # Calculate the SHA256 hash for the new binaries
-    arm64_sha256=$(sha256sum coffer_darwin_arm64 | cut -d ' ' -f 1)
-    amd64_sha256=$(sha256sum coffer_darwin_amd64 | cut -d ' ' -f 1)
-
-    # Update the SHA256 hashes in the formula
-    sed -i "7s/.*/    sha256 \"${arm64_sha256}\"/" Formula/coffer.rb
-    sed -i "10s/.*/    sha256 \"${amd64_sha256}\"/" Formula/coffer.rb
-
-    # Delete the new binaries
-    rm -f coffer_darwin*
+    base="https://github.com/missuo/coffer-releases/releases/download/v${last_version}"
+    for target in macos-universal linux-x86_64 linux-aarch64; do
+        asset="coffer-${last_version}-${target}.tar.gz"
+        wget -q -O "${asset}" "${base}/${asset}"
+        sha256=$(sha256sum "${asset}" | cut -d ' ' -f 1)
+        rm -f "${asset}"
+        url_line=$(grep -n "${asset}" Formula/coffer.rb | head -1 | cut -d ':' -f 1)
+        if [[ ! "$sha256" =~ ^[0-9a-f]{64}$ ]] || [ -z "$url_line" ]; then
+            echo "Invalid coffer asset metadata for ${target}" >&2
+            return 1
+        fi
+        sed -i "$((url_line + 1))s|sha256 \".*\"|sha256 \"${sha256}\"|" Formula/coffer.rb
+    done
 
     echo -e "${GREEN}✓ coffer updated successfully${NC}"
 }
@@ -805,51 +803,87 @@ update_xdl-cli(){
     echo -e "${GREEN}✓ xdl-cli updated successfully${NC}"
 }
 
+FAILED_UPDATES=()
+
+# Run one update in a subshell with errexit on. If it fails, put Formula/ and
+# Casks/ back the way they were and delete anything it downloaded, so one broken
+# upstream cannot stop the rest or leave a half-edited formula to be committed.
+run_update(){
+    local fn="$1"
+    local snapshot rc
+    snapshot=$(mktemp -d)
+    cp -R Formula Casks "$snapshot"/
+    find . -maxdepth 1 -type f | sort > "$snapshot/files.before"
+
+    set +e
+    ( set -e; "$fn" )
+    rc=$?
+    set -e
+
+    if (( rc != 0 )); then
+        rm -rf Formula Casks
+        cp -R "$snapshot/Formula" "$snapshot/Casks" .
+        find . -maxdepth 1 -type f | sort | comm -13 "$snapshot/files.before" - | while IFS= read -r f; do rm -f "$f"; done
+        FAILED_UPDATES+=("${fn#update_}")
+        echo -e "${YELLOW}✗ ${fn#update_} failed (exit ${rc}); left unchanged${NC}"
+    fi
+    rm -rf "$snapshot"
+}
+
 main(){
     echo "======================================"
     echo "  Homebrew Formula Update Script"
     echo "======================================"
     echo ""
 
-    update_deeplx
+    run_update update_deeplx
     sleep 5
-    update_claude2openai
+    run_update update_claude2openai
     sleep 5
-    update_imgzip
+    run_update update_imgzip
     sleep 5
-    update_motrix
+    run_update update_motrix
     sleep 5
-    update_polyglot-sub
+    run_update update_polyglot-sub
     sleep 5
-    update_koe
+    run_update update_koe
     sleep 5
-    update_sameru
+    run_update update_sameru
     sleep 5
-    update_tamio
+    run_update update_tamio
     sleep 5
-    update_fixtwitter
+    run_update update_fixtwitter
     sleep 5
-    update_fixtwitter-nosb
+    run_update update_fixtwitter-nosb
     sleep 5
-    update_xpost
+    run_update update_xpost
     sleep 5
-    update_rdap
+    run_update update_rdap
     sleep 5
-    update_speedtest-rust
+    run_update update_speedtest-rust
     sleep 5
-    update_coffer
+    run_update update_coffer
     sleep 5
-    update_mailclaw
+    run_update update_mailclaw
     sleep 5
-    update_tokens
+    run_update update_tokens
     sleep 5
-    update_ai
+    run_update update_ai
     sleep 5
-    update_xdl
+    run_update update_xdl
     sleep 5
-    update_xdl-cli
+    run_update update_xdl-cli
 
     validate_formulae
+
+    if (( ${#FAILED_UPDATES[@]} > 0 )); then
+        echo ""
+        echo -e "${YELLOW}Failed: ${FAILED_UPDATES[*]}${NC}"
+        # The workflow commits whatever did update, then fails the run on this.
+        if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+            echo "failed=${FAILED_UPDATES[*]}" >> "$GITHUB_OUTPUT"
+        fi
+    fi
 
     echo ""
     echo "======================================"
